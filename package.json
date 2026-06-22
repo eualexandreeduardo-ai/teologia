@@ -1,0 +1,10 @@
+{
+  "name": "academia-teologica-do-zero-ao-saber",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma estática da Academia Teológica do zero ao saber, pronta para GitHub e Vercel.",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  }
+}
