@@ -837,13 +837,11 @@
   function quizScore(n) { return Number(localStorage.getItem('quiz_m' + n + '_score') || 0); }
   function quizTotal(n) { return (QUIZZES[String(n)] || []).length; }
   function passScore(n) { return Math.floor(quizTotal(n) / 2) + 1; }
-  // A aprovação é definida exclusivamente pela avaliação objetiva: mais da metade
-  // das questões corretas. O checklist continua salvo como acompanhamento de estudo.
-  function moduleApproved(n) { return quizPassed(n); }
+  function moduleApproved(n) { return moduleTasksComplete(n) && quizPassed(n); }
   function moduleUnlocked(n) { return Number(n) === 1 || moduleApproved(Number(n) - 1); }
   function nextUnlockedModule() {
     for(let n=1; n<=maxModule; n++) if(moduleUnlocked(n) && !moduleApproved(n)) return n;
-    return null;
+    return maxModule;
   }
   function setText(id, txt) { const el = qs('#' + id); if(el) el.textContent = txt; }
 
@@ -852,17 +850,13 @@
     const done = ALL_TASKS.filter(isChecked).length;
     const pct = total ? Math.round((done / total) * 100) : 0;
     const approvedMods = Object.keys(MODULE_TASKS).filter(n => moduleApproved(Number(n))).length;
-    const unlockedMods = Object.keys(MODULE_TASKS).filter(n => moduleUnlocked(Number(n))).length;
     setText('pg-pct', pct + '%');
     setText('pg-pct2', pct + '%');
     setText('pg-done', done);
     setText('pg-total', total);
     setText('pg-mods', approvedMods);
     setText('pg-approved', approvedMods);
-    setText('pg-unlocked', unlockedMods);
-    setText('pg-locked', maxModule - unlockedMods);
-    const nextModule = nextUnlockedModule();
-    setText('pg-next', nextModule ? String(nextModule).padStart(2, '0') : 'Concluída');
+    setText('pg-next', String(nextUnlockedModule()).padStart(2, '0'));
     setText('hdr-prog', pct + '% concluído');
     const bar = qs('#pg-bar'); if(bar) bar.style.width = pct + '%';
     Object.keys(MODULE_TASKS).forEach(n => {
@@ -886,11 +880,13 @@
       const status = card.querySelector('.module-lock-status');
       if(status) {
         if(!unlocked) {
-          status.innerHTML = '🔒 Bloqueado · seja aprovado no módulo ' + String(n-1).padStart(2,'0');
+          status.innerHTML = '🔒 Bloqueado · conclua e seja aprovado no módulo ' + String(n-1).padStart(2,'0');
         } else if(approved) {
-          status.innerHTML = '✅ Aprovado · avaliação concluída';
+          status.innerHTML = '✅ Aprovado · checklist 100% e avaliação concluída';
+        } else if(quizPassed(n)) {
+          status.innerHTML = '🟡 Prova aprovada · checklist ' + taskPct + '%';
         } else {
-          status.innerHTML = '🔓 Liberado · checklist ' + taskPct + '% · avaliação pendente';
+          status.innerHTML = '🔓 Liberado · checklist ' + taskPct + '% · prova pendente';
         }
       }
     });
@@ -903,7 +899,7 @@
         if(a.getAttribute('href')) a.dataset.originalHref = a.getAttribute('href');
         a.removeAttribute('href');
         a.setAttribute('aria-disabled', 'true');
-        a.title = 'Módulo bloqueado. Seja aprovado no módulo anterior.';
+        a.title = 'Módulo bloqueado. Conclua e seja aprovado no módulo anterior.';
       } else {
         if(!a.getAttribute('href')) a.setAttribute('href', a.dataset.originalHref || ('modulo-' + String(n).padStart(2,'0') + '.html'));
         a.removeAttribute('aria-disabled');
@@ -933,10 +929,13 @@
       const required = passScore(n);
       if(moduleApproved(n)) {
         box.className = 'module-status-box status-approved';
-        box.innerHTML = `✅ <strong>Módulo aprovado.</strong> Você acertou ${score}/${total}; o próximo módulo está liberado. Seu checklist permanece salvo em ${taskPct}%.`;
+        box.innerHTML = `✅ <strong>Módulo aprovado.</strong> Checklist completo e avaliação aprovada com ${score}/${total}. O próximo módulo está liberado.`;
+      } else if(quizPassed(n) && !moduleTasksComplete(n)) {
+        box.className = 'module-status-box status-warning';
+        box.innerHTML = `🟡 <strong>Você já passou na avaliação</strong> (${score}/${total}), mas ainda precisa concluir o checklist. Checklist atual: ${taskPct}%.`;
       } else {
         box.className = 'module-status-box';
-        box.innerHTML = `🔐 Para liberar o próximo módulo, acerte mais da metade da avaliação: no mínimo ${required}/${total}. Checklist atual: ${taskPct}%.`;
+        box.innerHTML = `🔐 Para liberar o próximo módulo: checklist 100% + avaliação com no mínimo ${required}/${total} acertos. Checklist atual: ${taskPct}%.`;
       }
     }
     const unlock = qs('#unlock-next-' + n);
@@ -984,7 +983,8 @@
     const taskPct = modulePct(n);
     result.className = 'quiz-result ' + (passed ? 'passed' : 'failed');
     if(passed) {
-      result.innerHTML = `✅ Aprovado na avaliação: ${score}/${total} acertos. O próximo módulo foi liberado.`;
+      if(moduleTasksComplete(n)) result.innerHTML = `✅ Aprovado na avaliação: ${score}/${total} acertos. Como o checklist também está completo, o próximo módulo foi liberado.`;
+      else result.innerHTML = `✅ Você passou na avaliação: ${score}/${total} acertos. Falta concluir o checklist para liberar o próximo módulo. Checklist atual: ${taskPct}%.`;
     } else {
       result.innerHTML = `❌ Resultado: ${score}/${total} acertos. Para ser aprovado, precisa acertar mais da metade: no mínimo ${required}. Revise o módulo e tente novamente.`;
     }
@@ -1051,8 +1051,8 @@
     const main = qs('#main');
     const prev = n - 1;
     if(main) {
-      main.innerHTML = `<section class="page-hero"><div class="breadcrumb"><a href="index.html">Início</a> / <a href="modulos.html">Módulos</a> / Módulo ${String(n).padStart(2,'0')}</div><h2>🔒 Módulo bloqueado</h2><p>Este módulo ainda não está disponível. Para liberá-lo, seja aprovado na avaliação do Módulo ${String(prev).padStart(2,'0')}.</p></section>
-      <div class="locked-panel"><h3>O que falta?</h3><p>O sistema libera os módulos em sequência. Volte ao módulo anterior e acerte mais da metade das questões da avaliação.</p><a class="link-btn" href="modulo-${String(prev).padStart(2,'0')}.html">Voltar ao Módulo ${String(prev).padStart(2,'0')}</a> <a class="link-btn secondary" href="modulos.html">Ver todos os módulos</a></div>`;
+      main.innerHTML = `<section class="page-hero"><div class="breadcrumb"><a href="index.html">Início</a> / <a href="modulos.html">Módulos</a> / Módulo ${String(n).padStart(2,'0')}</div><h2>🔒 Módulo bloqueado</h2><p>Este módulo ainda não está disponível. Para liberar, conclua o checklist do Módulo ${String(prev).padStart(2,'0')} e seja aprovado na avaliação dele.</p></section>
+      <div class="locked-panel"><h3>O que falta?</h3><p>O sistema libera os módulos em sequência. Volte ao módulo anterior, finalize as tarefas e acerte mais da metade das questões.</p><a class="link-btn" href="modulo-${String(prev).padStart(2,'0')}.html">Voltar ao Módulo ${String(prev).padStart(2,'0')}</a> <a class="link-btn secondary" href="modulos.html">Ver todos os módulos</a></div>`;
     }
   }
 
