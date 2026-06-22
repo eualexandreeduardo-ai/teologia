@@ -1,1093 +1,762 @@
-(() => {
-  const MODULE_TASKS = {
-  "1": [
-    "m1c1",
-    "m1c2",
-    "m1c3",
-    "m1c4",
-    "m1c5",
-    "m1c6",
-    "m1c7",
-    "m1c8",
-    "m1c9",
-    "m1c10"
-  ],
-  "2": [
-    "m2c1",
-    "m2c2",
-    "m2c3",
-    "m2c4",
-    "m2c5",
-    "m2c6",
-    "m2c7",
-    "m2c8"
-  ],
-  "3": [
-    "m3c1",
-    "m3c2",
-    "m3c3",
-    "m3c4",
-    "m3c5",
-    "m3c6",
-    "m3c7",
-    "m3c8"
-  ],
-  "4": [
-    "m4c1",
-    "m4c2",
-    "m4c3",
-    "m4c4",
-    "m4c5",
-    "m4c6",
-    "m4c7"
-  ],
-  "5": [
-    "m5c1",
-    "m5c2",
-    "m5c3",
-    "m5c4",
-    "m5c5",
-    "m5c6",
-    "m5c7"
-  ],
-  "6": [
-    "m6c1",
-    "m6c2",
-    "m6c3",
-    "m6c4",
-    "m6c5",
-    "m6c6",
-    "m6c7",
-    "m6c8"
-  ],
-  "7": [
-    "m7c1",
-    "m7c2",
-    "m7c3",
-    "m7c4",
-    "m7c5",
-    "m7c6",
-    "m7c7"
-  ],
-  "8": [
-    "m8c1",
-    "m8c2",
-    "m8c3",
-    "m8c4",
-    "m8c5",
-    "m8c6",
-    "m8c7"
-  ],
-  "9": [
-    "m9c1",
-    "m9c2",
-    "m9c3",
-    "m9c4",
-    "m9c5",
-    "m9c6",
-    "m9c7",
-    "m9c8"
-  ],
-  "10": [
-    "m10c1",
-    "m10c2",
-    "m10c3",
-    "m10c4",
-    "m10c5",
-    "m10c6",
-    "m10c7"
-  ],
-  "11": [
-    "m11c1",
-    "m11c2",
-    "m11c3",
-    "m11c4",
-    "m11c5",
-    "m11c6",
-    "m11c7",
-    "m11c8"
-  ],
-  "12": [
-    "m12c1",
-    "m12c2",
-    "m12c3",
-    "m12c4",
-    "m12c5",
-    "m12c6",
-    "m12c7",
-    "m12c8"
-  ],
-  "13": [
-    "m13c1",
-    "m13c2",
-    "m13c3",
-    "m13c4",
-    "m13c5",
-    "m13c6"
-  ]
-};
-  const QUIZZES = {
-  "1": [
-    {
-      "q": "Qual é o centro do evangelho cristão?",
-      "options": [
-        "A melhoria moral do ser humano por esforço próprio",
-        "A morte e ressurreição de Cristo por nossos pecados",
-        "A prosperidade material como sinal da fé",
-        "A obediência a tradições religiosas humanas"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "Em João 1, Jesus é apresentado principalmente como:",
-      "options": [
-        "Apenas um profeta importante",
-        "O Verbo eterno que estava com Deus e era Deus",
-        "Um anjo superior aos demais",
-        "Um mestre criado no início do mundo"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "Biblicamente, pecado é melhor definido como:",
-      "options": [
-        "Somente um erro psicológico",
-        "Uma rebeldia contra Deus que afeta toda a pessoa",
-        "Apenas descumprir costumes culturais",
-        "Um problema que atinge só pessoas muito más"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "Fé salvadora envolve principalmente:",
-      "options": [
-        "Apenas acreditar que Deus existe",
-        "Confiar em Cristo e render-se a Ele",
-        "Conhecer muitas doutrinas sem obediência",
-        "Frequentar reuniões religiosas"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "A autoridade da Bíblia para o cristão vem do fato de ela ser:",
-      "options": [
-        "Uma coleção de frases motivacionais",
-        "Um livro antigo e popular",
-        "Revelação inspirada por Deus",
-        "Um manual de opiniões pessoais"
-      ],
-      "answer": 2
-    }
-  ],
-  "2": [
-    {
-      "q": "Hermenêutica bíblica é:",
-      "options": [
-        "A ciência e arte de interpretar corretamente o texto",
-        "A prática de escolher versículos isolados",
-        "A tentativa de achar códigos secretos em todo texto",
-        "Uma técnica para evitar o contexto histórico"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "O método histórico-gramatical busca primeiro:",
-      "options": [
-        "O que o texto significa para mim hoje",
-        "O sentido do texto no contexto do autor e dos primeiros leitores",
-        "Uma aplicação política imediata",
-        "Uma interpretação alegórica independente do texto"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "Por que o gênero literário é importante?",
-      "options": [
-        "Porque poesia, narrativa, lei, carta e apocalipse são lidos do mesmo modo",
-        "Porque cada gênero tem formas próprias de comunicar sentido",
-        "Porque elimina a necessidade de contexto",
-        "Porque substitui a leitura bíblica"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "A diferença entre descrição e prescrição ajuda a perceber que:",
-      "options": [
-        "Tudo que a Bíblia relata deve ser repetido literalmente",
-        "Nem tudo que a Bíblia descreve é mandamento para hoje",
-        "Narrativas não têm valor teológico",
-        "Cartas apostólicas não ensinam doutrina"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "Uma boa aplicação bíblica deve nascer:",
-      "options": [
-        "Do significado correto do texto",
-        "De frases soltas que combinam com minha ideia",
-        "Da emoção do momento apenas",
-        "De tradições sem exame"
-      ],
-      "answer": 0
-    }
-  ],
-  "3": [
-    {
-      "q": "O Antigo Testamento deve ser lido como:",
-      "options": [
-        "Um livro desconectado de Cristo",
-        "A história da criação, queda, alianças e promessa de redenção",
-        "Apenas uma coleção de regras antigas",
-        "Um texto sem valor para cristãos"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "Gênesis 1–3 apresenta principalmente:",
-      "options": [
-        "Criação, dignidade humana, queda e promessa inicial",
-        "A história final da igreja",
-        "A instituição da monarquia de Israel",
-        "A destruição de Jerusalém"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "As alianças no AT revelam:",
-      "options": [
-        "O plano progressivo de Deus na história",
-        "Que Deus muda de caráter constantemente",
-        "Que Israel não tem papel bíblico algum",
-        "Que a salvação depende de mérito humano absoluto"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Os profetas bíblicos eram principalmente:",
-      "options": [
-        "Adivinhos independentes",
-        "Mensageiros da aliança que chamavam o povo ao arrependimento",
-        "Filósofos sem relação com Israel",
-        "Escritores apenas de previsões políticas"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "A leitura cristã do AT deve evitar:",
-      "options": [
-        "Ver promessas e padrões que apontam para Cristo",
-        "Ignorar o contexto original e forçar qualquer alegoria",
-        "Ler os textos com atenção histórica",
-        "Observar a narrativa da redenção"
-      ],
-      "answer": 1
-    }
-  ],
-  "4": [
-    {
-      "q": "Os Evangelhos apresentam Jesus como:",
-      "options": [
-        "Personagem lendário sem relação com Israel",
-        "O cumprimento das promessas de Deus e o centro do Reino",
-        "Apenas um moralista antigo",
-        "Um líder político sem mensagem espiritual"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "Atos dos Apóstolos registra principalmente:",
-      "options": [
-        "A expansão da igreja pelo poder do Espírito",
-        "A construção do templo de Salomão",
-        "A criação do império romano",
-        "A queda do reino do norte"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "As cartas de Paulo devem ser lidas considerando:",
-      "options": [
-        "O problema pastoral e doutrinário de cada comunidade",
-        "Somente frases isoladas",
-        "A ausência de contexto histórico",
-        "Que todas foram escritas para esconder o evangelho"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A ressurreição de Cristo no NT é tratada como:",
-      "options": [
-        "Símbolo opcional sem importância histórica",
-        "O fundamento da fé e da esperança cristã",
-        "Uma lenda periférica",
-        "Um tema menos importante que costumes religiosos"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "O Novo Testamento mostra a igreja como:",
-      "options": [
-        "Comunidade formada por Cristo, guiada pelo Espírito e enviada em missão",
-        "Um clube privado sem missão",
-        "Uma substituta da Bíblia",
-        "Uma organização apenas política"
-      ],
-      "answer": 0
-    }
-  ],
-  "5": [
-    {
-      "q": "Bibliologia é o estudo teológico sobre:",
-      "options": [
-        "A doutrina da Bíblia",
-        "A arquitetura de templos",
-        "A história de impérios",
-        "A geografia moderna"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Inspiração bíblica significa que:",
-      "options": [
-        "Deus conduziu autores humanos na produção das Escrituras",
-        "Os autores não tinham personalidade própria",
-        "A Bíblia surgiu por sorte",
-        "A Bíblia é apenas opinião religiosa"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Suficiência das Escrituras quer dizer que:",
-      "options": [
-        "A Bíblia contém tudo que é necessário para fé e prática segundo Deus",
-        "Não precisamos estudar nada com cuidado",
-        "Toda pergunta técnica moderna está explicitamente escrita nela",
-        "A tradição humana é superior à revelação"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "O cânon bíblico se refere:",
-      "options": [
-        "À lista de livros reconhecidos como Escritura",
-        "A um estilo musical religioso",
-        "A uma regra de arquitetura",
-        "A uma tradução específica apenas"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Uma postura correta diante da Bíblia envolve:",
-      "options": [
-        "Submissão, estudo cuidadoso e obediência",
-        "Uso manipulador de versículos",
-        "Leitura sem contexto",
-        "Rejeição de qualquer interpretação responsável"
-      ],
-      "answer": 0
-    }
-  ],
-  "6": [
-    {
-      "q": "A doutrina da Trindade afirma que:",
-      "options": [
-        "Há três deuses separados",
-        "Deus é um só em essência e três pessoas: Pai, Filho e Espírito Santo",
-        "Jesus é uma criatura elevada",
-        "O Espírito Santo é apenas uma força impessoal"
-      ],
-      "answer": 1
-    },
-    {
-      "q": "A santidade de Deus significa que Ele é:",
-      "options": [
-        "Separado, puro e absolutamente distinto do pecado",
-        "Indiferente ao mal",
-        "Limitado pelo mundo",
-        "Igual aos ídolos humanos"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A soberania de Deus ensina que:",
-      "options": [
-        "Deus governa todas as coisas com sabedoria e propósito",
-        "Deus perdeu controle da criação",
-        "A história é puro acaso",
-        "O mal é mais forte que Deus"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Os atributos comunicáveis de Deus são aqueles que:",
-      "options": [
-        "Têm algum reflexo nas criaturas, como amor e justiça",
-        "Deus não possui",
-        "Pertencem apenas aos anjos",
-        "Eliminam a distinção entre Deus e homem"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Conhecer a Deus teologicamente deve produzir:",
-      "options": [
-        "Adoração, temor, humildade e obediência",
-        "Orgulho frio e arrogância",
-        "Desprezo pela oração",
-        "Indiferença ao próximo"
-      ],
-      "answer": 0
-    }
-  ],
-  "7": [
-    {
-      "q": "Cristologia estuda:",
-      "options": [
-        "A pessoa e a obra de Jesus Cristo",
-        "A origem dos templos medievais",
-        "A história de Israel apenas",
-        "A organização financeira da igreja"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A encarnação significa que:",
-      "options": [
-        "O Filho eterno assumiu verdadeira natureza humana",
-        "Jesus deixou de ser Deus",
-        "Deus apenas fingiu ser humano",
-        "Um homem comum virou Deus por esforço"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A união hipostática afirma que Cristo é:",
-      "options": [
-        "Uma pessoa com duas naturezas, divina e humana",
-        "Duas pessoas separadas",
-        "Somente humano",
-        "Somente uma aparência de corpo"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A cruz de Cristo é central porque:",
-      "options": [
-        "Ali Cristo oferece reconciliação e expiação pelos pecadores",
-        "Foi apenas exemplo político",
-        "Não tem relação com perdão",
-        "Substitui a ressurreição completamente"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A ressurreição de Jesus confirma:",
-      "options": [
-        "Sua vitória, senhorio e a esperança futura do povo de Deus",
-        "Que a morte venceu Cristo",
-        "Que o evangelho não tem base",
-        "Que Jesus era apenas simbólico"
-      ],
-      "answer": 0
-    }
-  ],
-  "8": [
-    {
-      "q": "Pneumatologia é o estudo sobre:",
-      "options": [
-        "O Espírito Santo",
-        "A estrutura física do templo",
-        "A sucessão de reis",
-        "A filosofia grega apenas"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "O Espírito Santo é biblicamente:",
-      "options": [
-        "Uma pessoa divina, não uma energia impessoal",
-        "Uma emoção humana",
-        "Um anjo criado",
-        "Uma metáfora sem realidade"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A obra do Espírito inclui:",
-      "options": [
-        "Convencer, regenerar, santificar, consolar e capacitar",
-        "Substituir Cristo como Salvador",
-        "Anular a Bíblia",
-        "Produzir confusão como objetivo"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Fruto do Espírito se refere principalmente a:",
-      "options": [
-        "Caráter formado por Deus",
-        "Técnicas de palco",
-        "Riqueza material garantida",
-        "Status religioso público"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Dons espirituais devem ser exercidos:",
-      "options": [
-        "Para edificação do corpo de Cristo, com amor e ordem",
-        "Para autopromoção",
-        "Sem discernimento",
-        "Contra a comunidade"
-      ],
-      "answer": 0
-    }
-  ],
-  "9": [
-    {
-      "q": "Antropologia teológica estuda:",
-      "options": [
-        "O ser humano à luz de Deus e da Escritura",
-        "Apenas fósseis antigos",
-        "O desenho de igrejas",
-        "O calendário litúrgico"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A imagem de Deus no ser humano fundamenta:",
-      "options": [
-        "A dignidade humana e a responsabilidade diante de Deus",
-        "A superioridade moral automática de todos",
-        "A ausência de pecado",
-        "A divinização do homem"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Hamartiologia é a doutrina sobre:",
-      "options": [
-        "O pecado",
-        "A igreja",
-        "Os anjos",
-        "Os sacramentos"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Soteriologia trata de:",
-      "options": [
-        "A salvação realizada por Deus em Cristo",
-        "A criação do mundo físico apenas",
-        "A política romana",
-        "A música no culto"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A salvação cristã é recebida:",
-      "options": [
-        "Pela graça, mediante a fé, em Cristo",
-        "Por mérito moral absoluto",
-        "Por nacionalidade religiosa",
-        "Por conhecimento secreto"
-      ],
-      "answer": 0
-    }
-  ],
-  "10": [
-    {
-      "q": "Eclesiologia é a doutrina sobre:",
-      "options": [
-        "A igreja",
-        "O fim dos tempos apenas",
-        "A inspiração bíblica apenas",
-        "A geologia bíblica"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A igreja no NT é melhor compreendida como:",
-      "options": [
-        "O povo de Deus reunido em Cristo e enviado em missão",
-        "Um prédio sagrado apenas",
-        "Uma empresa religiosa",
-        "Um grupo sem responsabilidade ética"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Batismo e Ceia do Senhor devem apontar para:",
-      "options": [
-        "Cristo, sua obra e a identidade do povo da aliança",
-        "O mérito de líderes humanos",
-        "A substituição da fé pessoal",
-        "A negação do evangelho"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A vida cristã comunitária envolve:",
-      "options": [
-        "Adoração, ensino, comunhão, serviço e disciplina amorosa",
-        "Individualismo absoluto",
-        "Isolamento espiritual",
-        "Ausência de prestação de contas"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A missão da igreja inclui:",
-      "options": [
-        "Proclamar o evangelho e viver como testemunha do Reino",
-        "Guardar conhecimento sem servir",
-        "Substituir Cristo",
-        "Evitar o próximo"
-      ],
-      "answer": 0
-    }
-  ],
-  "11": [
-    {
-      "q": "A história da igreja ajuda o estudante a:",
-      "options": [
-        "Aprender com erros, debates e testemunhos do povo cristão",
-        "Ignorar a Bíblia",
-        "Repetir toda tradição sem exame",
-        "Abandonar a fé histórica"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Os concílios cristológicos antigos foram importantes porque:",
-      "options": [
-        "Defenderam doutrinas centrais sobre Cristo e a Trindade",
-        "Criaram o evangelho do zero",
-        "Negaram a divindade de Cristo",
-        "Substituíram as Escrituras completamente"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A Reforma Protestante enfatizou especialmente:",
-      "options": [
-        "A autoridade das Escrituras e a justificação pela fé",
-        "A salvação por compra de indulgências",
-        "A negação da graça",
-        "A inexistência da Bíblia"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Patrística refere-se ao estudo:",
-      "options": [
-        "Dos pais da igreja e dos primeiros séculos cristãos",
-        "Do fim do mundo apenas",
-        "De mapas modernos",
-        "Da música contemporânea"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Estudar história da igreja exige:",
-      "options": [
-        "Caridade, discernimento e atenção ao contexto",
-        "Anacronismo e julgamento simplista",
-        "Desprezo por fontes primárias",
-        "Ignorar controvérsias"
-      ],
-      "answer": 0
-    }
-  ],
-  "12": [
-    {
-      "q": "Escatologia é o estudo sobre:",
-      "options": [
-        "As últimas coisas e a esperança cristã",
-        "A arquitetura do templo",
-        "A geografia de Israel apenas",
-        "A filosofia moral secular"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Uma escatologia saudável deve produzir:",
-      "options": [
-        "Esperança, vigilância e fidelidade a Cristo",
-        "Medo especulativo e datas secretas",
-        "Desprezo pelo presente",
-        "Sensacionalismo sem santidade"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Apologética cristã é:",
-      "options": [
-        "A defesa racional e respeitosa da fé",
-        "A agressão contra quem discorda",
-        "A troca da Bíblia por filosofia",
-        "A negação da razão"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Ao estudar temas como anticristo e fim dos tempos, é essencial:",
-      "options": [
-        "Manter Cristo no centro e evitar especulação irresponsável",
-        "Começar por teorias conspiratórias",
-        "Marcar datas definitivas",
-        "Ignorar textos bíblicos difíceis"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A esperança final cristã se concentra em:",
-      "options": [
-        "Ressurreição, juízo, nova criação e presença de Deus",
-        "Fuga eterna da criação sem restauração",
-        "Vitória do mal",
-        "Ausência de justiça final"
-      ],
-      "answer": 0
-    }
-  ],
-  "13": [
-    {
-      "q": "Estudos avançados em teologia exigem:",
-      "options": [
-        "Fundamentos sólidos, método, humildade e pesquisa séria",
-        "Pular os módulos básicos",
-        "Só assistir vídeos curtos",
-        "Evitar bibliografia acadêmica"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Línguas bíblicas ajudam porque:",
-      "options": [
-        "Aproximam o estudante dos textos originais com mais precisão",
-        "Substituem a dependência de Deus",
-        "Eliminam toda divergência interpretativa",
-        "Tornam desnecessário o contexto"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Teologia bíblica, sistemática, histórica e prática devem:",
-      "options": [
-        "Dialogar entre si de modo integrado",
-        "Competir como áreas inimigas",
-        "Ser estudadas sem Escritura",
-        "Ser reduzidas a opinião pessoal"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "Um pesquisador cristão maduro deve:",
-      "options": [
-        "Distinguir doutrina central, secundária e opinião",
-        "Tratar toda discordância como heresia",
-        "Evitar ouvir autores diferentes",
-        "Confundir preferência pessoal com dogma"
-      ],
-      "answer": 0
-    },
-    {
-      "q": "A finalidade maior da teologia é:",
-      "options": [
-        "Conhecer e adorar a Deus, servindo ao próximo com fidelidade",
-        "Vencer discussões online",
-        "Acumular status intelectual",
-        "Criar frieza espiritual"
-      ],
-      "answer": 0
-    }
-  ]
-};
-  const MODULE_TITLES = {
-  "1": "Fundamentos da Fé Cristã",
-  "2": "Hermenêutica Bíblica",
-  "3": "Panorama do Antigo Testamento",
-  "4": "Panorama do Novo Testamento",
-  "5": "Doutrina da Bíblia — Bibliologia",
-  "6": "Doutrina de Deus — Teologia Própria",
-  "7": "Cristologia — A Pessoa e Obra de Jesus Cristo",
-  "8": "Pneumatologia — O Espírito Santo",
-  "9": "Homem, Pecado e Salvação — Antropologia, Hamartiologia e Soteriologia",
-  "10": "Eclesiologia — Igreja, Sacramentos e Vida Cristã",
-  "11": "História da Igreja — Dos Apóstolos à Atualidade",
-  "12": "Escatologia e Apologética — Esperança Cristã e Defesa da Fé",
-  "13": "Estudos Avançados — Especialização Teológica"
-};
-  const ALL_TASKS = Object.values(MODULE_TASKS).flat();
-  const qs = (sel, root=document) => root.querySelector(sel);
-  const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-  const isChecked = id => localStorage.getItem('task_' + id) === '1';
-  const setChecked = (id, val) => localStorage.setItem('task_' + id, val ? '1' : '0');
-  const maxModule = Object.keys(MODULE_TASKS).length;
 
-  function modulePct(n) {
-    const ids = MODULE_TASKS[String(n)] || [];
-    if(!ids.length) return 0;
-    const done = ids.filter(isChecked).length;
-    return Math.round((done / ids.length) * 100);
+/* ===== CSS VARIABLES ===== */
+:root {
+  --c-green-deep:   #071a12;
+  --c-green-mid:    #0f3f2a;
+  --c-green-light:  #1f6f49;
+  --c-green-pale:   #e4f3e8;
+  --c-gold:         #f0c94a;
+  --c-gold-light:   #ffe27a;
+  --c-gold-pale:    #fff4c7;
+  --c-parchment:    #f7f1e6;
+  --c-ivory:        #fffdf8;
+  --c-white:        #ffffff;
+  --c-text-deep:    #1d1408;
+  --c-text-mid:     #342417;
+  --c-text-light:   #574536;
+  --c-burgundy:     #7a2c2c;
+  --c-burg-pale:    #fdf0f0;
+  --c-navy:         #1e3a5f;
+  --c-navy-pale:    #eef3fb;
+  --c-violet:       #4a2970;
+  --c-violet-pale:  #f3eefb;
+  --c-border:       #e0d5c0;
+  --c-shadow:       rgba(7,26,18,0.14);
+  --c-shadow-lg:    rgba(7,26,18,0.28);
+  --sidebar-w:      285px;
+  --header-h:       60px;
+  --r:              12px;
+  --r-sm:           6px;
+  --ease:           all 0.28s cubic-bezier(0.4,0,0.2,1);
+  --font-h:         "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-b:         "Crimson Pro", Georgia, "Book Antiqua", serif;
+}
+
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:17px}
+body{font-family:var(--font-b);background:var(--c-parchment);color:var(--c-text-deep);line-height:1.78;overflow-x:hidden}
+img{max-width:100%}
+a{color:var(--c-green-mid);text-decoration:none}
+a:hover{color:var(--c-gold)}
+ul,ol{padding-left:1.4rem}
+::-webkit-scrollbar{width:7px}
+::-webkit-scrollbar-track{background:var(--c-parchment)}
+::-webkit-scrollbar-thumb{background:var(--c-green-mid);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--c-green-deep)}
+
+/* ===== FIXED HEADER ===== */
+#main-header{
+  position:fixed;top:0;left:0;right:0;height:var(--header-h);
+  background:var(--c-green-deep);display:flex;align-items:center;
+  padding:0 1.25rem;gap:0.75rem;z-index:1000;
+  box-shadow:0 2px 24px var(--c-shadow-lg);
+  border-bottom:2px solid rgba(201,162,48,0.35);
+}
+#main-header h1{
+  font-family:var(--font-h);font-size:1rem;color:var(--c-gold);
+  font-weight:700;letter-spacing:0.4px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;flex:1;
+}
+#main-header h1 small{color:rgba(255,255,255,0.5);font-size:0.78em;font-weight:400;margin-left:0.5rem}
+.hdr-pill{
+  background:rgba(255,255,255,0.08);border:1px solid rgba(201,162,48,0.4);
+  border-radius:20px;padding:3px 12px;font-size:0.76rem;
+  color:var(--c-gold);white-space:nowrap;font-family:var(--font-h);
+}
+.hdr-btn{
+  background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);
+  color:rgba(255,255,255,0.85);cursor:pointer;border-radius:var(--r-sm);
+  padding:5px 10px;font-size:0.8rem;transition:var(--ease);
+  display:flex;align-items:center;gap:4px;white-space:nowrap;
+}
+.hdr-btn:hover{background:rgba(201,162,48,0.2);border-color:var(--c-gold);color:var(--c-gold)}
+#sb-toggle{display:none}
+
+/* ===== SIDEBAR ===== */
+#sidebar{
+  position:fixed;top:var(--header-h);left:0;width:var(--sidebar-w);
+  height:calc(100vh - var(--header-h));background:var(--c-green-deep);
+  overflow-y:auto;z-index:900;padding:1rem 0 2rem;
+  border-right:1px solid rgba(201,162,48,0.18);
+  transition:transform 0.3s ease;
+}
+.sb-section{
+  padding:0.75rem 1.25rem 0.25rem;font-size:0.6rem;text-transform:uppercase;
+  letter-spacing:2px;color:rgba(201,162,48,0.55);font-family:var(--font-h);
+  margin-top:0.25rem;
+}
+.sb-link{
+  display:flex;align-items:center;gap:0.55rem;padding:0.42rem 1.25rem;
+  color:rgba(255,255,255,0.72);font-size:0.82rem;font-family:var(--font-b);
+  transition:var(--ease);border-left:3px solid transparent;text-decoration:none;
+  line-height:1.35;cursor:pointer;
+}
+.sb-link:hover,.sb-link.active{
+  color:var(--c-gold);background:rgba(255,255,255,0.05);
+  border-left-color:var(--c-gold);
+}
+.sb-link .sb-num{
+  font-size:0.65rem;background:rgba(201,162,48,0.18);color:var(--c-gold);
+  border-radius:3px;padding:1px 5px;font-family:monospace;flex-shrink:0;
+  line-height:1.6;
+}
+.sb-prog{height:2px;background:rgba(255,255,255,0.08);margin:0 1.25rem 0.2rem;border-radius:2px;overflow:hidden}
+.sb-prog-fill{height:100%;background:var(--c-gold);border-radius:2px;transition:width 0.5s ease;width:0%}
+#sb-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:850;
+  backdrop-filter:blur(2px);
+}
+#sb-overlay.show{display:block}
+
+/* ===== MAIN LAYOUT ===== */
+#main{margin-left:var(--sidebar-w);margin-top:var(--header-h);padding:2rem 2rem 4rem}
+
+/* ===== COVER ===== */
+.cover{
+  background:linear-gradient(135deg,#071a12 0%,#0f3f2a 52%,#071a12 100%);
+  border-radius:var(--r);padding:3.5rem 3rem;color:#fff;
+  margin-bottom:2rem;position:relative;overflow:hidden;
+}
+.cover::before{
+  content:"✝";position:absolute;right:2.5rem;top:50%;transform:translateY(-50%);
+  font-size:9rem;opacity:0.05;color:var(--c-gold);pointer-events:none;
+}
+.cover::after{
+  content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--c-gold),var(--c-gold-light),var(--c-gold));
+}
+.cover-badge{
+  display:inline-block;background:rgba(201,162,48,0.18);border:1px solid var(--c-gold);
+  color:var(--c-gold);padding:4px 14px;border-radius:20px;font-size:0.72rem;
+  letter-spacing:1.8px;text-transform:uppercase;margin-bottom:1.25rem;
+  font-family:var(--font-h);
+}
+.cover h1{
+  font-family:var(--font-h);font-size:clamp(1.7rem,4vw,2.8rem);
+  font-weight:900;line-height:1.18;color:#fff;margin-bottom:0.75rem;
+}
+.cover h1 em{color:var(--c-gold);font-style:normal}
+.cover .cover-sub{
+  font-size:1.05rem;color:rgba(255,255,255,0.78);max-width:580px;
+  line-height:1.7;margin-bottom:1.75rem;
+}
+.cover-stats{display:flex;gap:2rem;flex-wrap:wrap;margin-top:0.5rem}
+.cs .n{display:block;font-size:2.2rem;font-weight:700;color:var(--c-gold);font-family:var(--font-h);line-height:1}
+.cs .l{font-size:0.7rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;margin-top:0.2rem}
+
+/* ===== SECTION HEADERS ===== */
+.sec-title{
+  font-family:var(--font-h);font-size:1.75rem;color:var(--c-green-deep);
+  margin-bottom:0.4rem;padding-bottom:0.5rem;
+  border-bottom:2px solid var(--c-gold);
+  display:flex;align-items:center;gap:0.65rem;
+}
+.sec-intro{color:var(--c-text-mid);font-size:0.97rem;margin-bottom:1.4rem;line-height:1.72}
+section{margin-bottom:3rem;scroll-margin-top:calc(var(--header-h) + 1.25rem)}
+.subsec{
+  font-family:var(--font-h);font-size:1.05rem;color:var(--c-green-deep);
+  margin:1.25rem 0 0.65rem;padding-left:0.75rem;
+  border-left:3px solid var(--c-gold);
+}
+
+/* ===== CARDS / BOXES ===== */
+.card{
+  background:var(--c-ivory);border:1px solid var(--c-border);
+  border-radius:var(--r);padding:1.5rem;margin-bottom:1.25rem;
+  box-shadow:0 2px 14px var(--c-shadow);
+}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.9rem;margin-bottom:1.25rem}
+.stat-card{
+  background:var(--c-ivory);border:1px solid var(--c-border);
+  border-radius:var(--r);padding:1.2rem;text-align:center;
+  box-shadow:0 2px 8px var(--c-shadow);
+}
+.stat-card .sn{font-family:var(--font-h);font-size:2.6rem;font-weight:700;color:var(--c-green-mid);line-height:1;display:block}
+.stat-card .sl{font-size:0.77rem;color:var(--c-text-light);text-transform:uppercase;letter-spacing:0.4px;margin-top:0.25rem}
+
+/* ===== PROGRESS BARS ===== */
+.prog-wrap{margin-bottom:1.25rem}
+.prog-lbl{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem}
+.prog-lbl span{font-size:0.88rem;color:var(--c-text-mid)}
+.prog-lbl strong{color:var(--c-green-mid);font-family:var(--font-h)}
+.prog-bar{height:13px;background:var(--c-green-pale);border-radius:7px;overflow:hidden;border:1px solid var(--c-border)}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--c-green-mid),var(--c-green-light));border-radius:7px;transition:width 0.5s ease;width:0%}
+.prog-sm{height:5px;margin:0.35rem 0;background:var(--c-green-pale);border-radius:3px;overflow:hidden}
+.prog-sm-fill{height:100%;background:linear-gradient(90deg,var(--c-gold),var(--c-gold-light));border-radius:3px;transition:width 0.5s ease;width:0%}
+
+/* ===== BUTTONS ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:0.45rem;
+  padding:0.55rem 1.2rem;border-radius:var(--r-sm);font-family:var(--font-h);
+  font-size:0.88rem;font-weight:600;cursor:pointer;transition:var(--ease);
+  border:none;text-decoration:none;letter-spacing:0.2px;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn-green{background:var(--c-green-mid);color:#fff}
+.btn-green:hover{background:var(--c-green-deep);box-shadow:0 4px 14px var(--c-shadow)}
+.btn-gold{background:var(--c-gold);color:var(--c-green-deep)}
+.btn-gold:hover{background:var(--c-gold-light)}
+.btn-outline{background:transparent;color:var(--c-green-mid);border:2px solid var(--c-green-mid)}
+.btn-outline:hover{background:var(--c-green-mid);color:#fff}
+.btn-danger{background:var(--c-burgundy);color:#fff}
+.btn-danger:hover{background:#5c2020}
+.btn-sm{padding:0.35rem 0.8rem;font-size:0.78rem}
+.btn-complete{
+  width:100%;justify-content:center;margin-top:1rem;
+  background:var(--c-green-pale);color:var(--c-green-deep);
+  border:2px solid var(--c-green-mid);
+}
+.btn-complete:hover{background:var(--c-green-mid);color:#fff}
+.btn-complete.done{background:var(--c-green-mid);color:#fff}
+.btn-complete.done::before{content:"✓  "}
+.btns-row{display:flex;gap:0.65rem;flex-wrap:wrap;margin:1rem 0}
+
+/* ===== FILTER TABS ===== */
+.filter-wrap{
+  background:var(--c-ivory);border:1px solid var(--c-border);
+  border-radius:var(--r);padding:1rem 1.4rem;margin-bottom:1.4rem;
+  box-shadow:0 2px 8px var(--c-shadow);
+}
+.filter-lbl{font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--c-text-light);margin-bottom:0.65rem;font-family:var(--font-h)}
+.filter-tabs{display:flex;flex-wrap:wrap;gap:0.45rem}
+.ftab{
+  padding:4px 13px;border-radius:20px;font-size:0.78rem;
+  cursor:pointer;border:1px solid var(--c-border);
+  background:#fff;color:var(--c-text-mid);font-family:var(--font-b);
+  transition:var(--ease);
+}
+.ftab:hover,.ftab.active{background:var(--c-green-mid);color:#fff;border-color:var(--c-green-mid)}
+
+/* ===== MODULE CARDS ===== */
+.mod-card{
+  background:var(--c-ivory);border:1px solid var(--c-border);
+  border-radius:var(--r);margin-bottom:1.4rem;
+  box-shadow:0 2px 14px var(--c-shadow);overflow:hidden;
+  transition:var(--ease);
+}
+.mod-card.done{border-left:4px solid var(--c-green-mid)}
+.mod-header{
+  padding:1.35rem 1.5rem;cursor:pointer;
+  display:flex;align-items:flex-start;gap:1rem;
+  transition:var(--ease);border-bottom:1px solid transparent;
+}
+.mod-header:hover{background:rgba(45,106,79,0.035)}
+.mod-header.open{border-bottom-color:var(--c-border);background:rgba(45,106,79,0.025)}
+.mod-num{
+  min-width:46px;height:46px;background:var(--c-green-deep);color:var(--c-gold);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-h);font-weight:700;font-size:1.05rem;flex-shrink:0;
+}
+.mod-info{flex:1;min-width:0}
+.mod-info h3{font-family:var(--font-h);font-size:1.15rem;color:var(--c-green-deep);font-weight:700;margin-bottom:0.35rem;line-height:1.3}
+.mod-meta{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.45rem}
+.badge{
+  display:inline-flex;align-items:center;gap:0.2rem;
+  padding:2px 8px;border-radius:12px;font-size:0.68rem;font-weight:600;letter-spacing:0.2px;
+}
+.b-beg{background:var(--c-green-pale);color:#0d3d22}
+.b-int{background:var(--c-gold-pale);color:#7a5500}
+.b-adv{background:#fde8e8;color:var(--c-burgundy)}
+.b-dur{background:var(--c-ivory);border:1px solid var(--c-border);color:var(--c-text-light)}
+.b-area{background:var(--c-navy-pale);color:var(--c-navy)}
+.mod-arrow{color:var(--c-green-mid);font-size:1.1rem;transition:transform 0.3s ease;flex-shrink:0;margin-top:0.6rem}
+.mod-header.open .mod-arrow{transform:rotate(180deg)}
+.mod-mini-prog{padding:0 1.5rem 0.7rem}
+
+/* ===== MODULE BODY (ACCORDION) ===== */
+.mod-body{max-height:0;overflow:hidden;transition:max-height 0.45s cubic-bezier(0.4,0,0.2,1)}
+.mod-body.open{max-height:none}
+.mod-content{padding:1.5rem}
+
+/* ===== INFO BOXES ===== */
+.box{border-radius:var(--r-sm);padding:0.9rem 1.1rem;margin:0.85rem 0;border-left:4px solid;font-size:0.93rem}
+.box-t{font-family:var(--font-h);font-weight:700;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.35rem}
+.box-bible{background:var(--c-gold-pale);border-color:var(--c-gold)}
+.box-bible .box-t{color:#7a5500}
+.box-video{background:#eef6ff;border-color:#3b82f6}
+.box-video .box-t{color:#1e40af}
+.box-academic{background:var(--c-violet-pale);border-color:var(--c-violet)}
+.box-academic .box-t{color:var(--c-violet)}
+.box-warn{background:var(--c-burg-pale);border-color:var(--c-burgundy)}
+.box-warn .box-t{color:var(--c-burgundy)}
+.box-info{background:var(--c-navy-pale);border-color:var(--c-navy)}
+.box-info .box-t{color:var(--c-navy)}
+.box-reflect{background:#f5f0ff;border-color:#7c3aed}
+.box-reflect .box-t{color:#5b21b6}
+.box-ex{background:#f0fdf4;border-color:var(--c-green-mid)}
+.box-ex .box-t{color:var(--c-green-deep)}
+.box-persp{background:#fffbeb;border-color:var(--c-gold)}
+.box-persp .box-t{color:#92400e}
+
+/* ===== CHECKLISTS ===== */
+.cklist{list-style:none;padding:0}
+.cklist li{display:flex;align-items:flex-start;gap:0.7rem;padding:0.45rem 0;border-bottom:1px solid var(--c-border);font-size:0.93rem}
+.cklist li:last-child{border-bottom:none}
+.cklist input[type="checkbox"]{width:17px;height:17px;accent-color:var(--c-green-mid);cursor:pointer;flex-shrink:0;margin-top:3px}
+.cklist label{cursor:pointer;line-height:1.5;flex:1;transition:var(--ease)}
+.cklist input:checked + label{text-decoration:line-through;color:var(--c-text-light)}
+
+/* ===== EXERCISE LIST ===== */
+.exlist{counter-reset:ex;padding:0;list-style:none}
+.exlist li{counter-increment:ex;padding:0.7rem 0 0.7rem 2.75rem;border-bottom:1px solid var(--c-border);position:relative;font-size:0.93rem}
+.exlist li:last-child{border-bottom:none}
+.exlist li::before{
+  content:counter(ex);position:absolute;left:0;top:0.7rem;
+  width:26px;height:26px;background:var(--c-green-mid);color:#fff;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:700;font-family:var(--font-h);
+}
+
+/* ===== RESOURCES ===== */
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:0.7rem;margin:0.7rem 0}
+.res-item{background:#fff;border:1px solid var(--c-border);border-radius:var(--r-sm);padding:0.75rem;font-size:0.84rem}
+.res-item strong{display:block;color:var(--c-green-deep);margin-bottom:0.2rem;font-family:var(--font-h);font-size:0.88rem;line-height:1.3}
+.res-item .rm{color:var(--c-text-light);font-size:0.76rem;margin-bottom:0.3rem;font-style:italic}
+.res-item .rn{color:var(--c-text-mid);font-size:0.79rem;line-height:1.5}
+.rtag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.2px;margin-bottom:0.3rem}
+.rt-v{background:#dbeafe;color:#1e40af}
+.rt-c{background:#d1fae5;color:#065f46}
+.rt-l{background:#ede9fe;color:#5b21b6}
+.rt-a{background:#fef3c7;color:#92400e}
+.rt-s{background:#fce7f3;color:#9d174d}
+.rt-p{background:#fee2e2;color:#991b1b}
+
+/* ===== PERSPECTIVES TABLE ===== */
+.ptable{width:100%;border-collapse:collapse;font-size:0.83rem;margin:0.7rem 0}
+.ptable th{background:var(--c-green-deep);color:var(--c-gold);padding:0.55rem 0.75rem;text-align:left;font-family:var(--font-h);font-size:0.77rem;letter-spacing:0.3px}
+.ptable td{padding:0.55rem 0.75rem;border-bottom:1px solid var(--c-border);vertical-align:top;line-height:1.5}
+.ptable tr:nth-child(even){background:rgba(45,106,79,0.03)}
+.ptable tr:hover{background:var(--c-green-pale)}
+.ptable td:first-child{font-family:var(--font-h);color:var(--c-green-deep);font-weight:700;font-size:0.85rem;white-space:nowrap}
+.ptable td:nth-child(2){color:var(--c-navy);font-size:0.8rem}
+
+/* ===== NOTES AREA ===== */
+.notes-wrap{margin-top:1.1rem}
+.notes-wrap label{display:block;font-family:var(--font-h);font-weight:600;color:var(--c-green-deep);margin-bottom:0.45rem;font-size:0.88rem}
+.notes-wrap textarea{
+  width:100%;min-height:110px;padding:0.7rem;
+  border:1px solid var(--c-border);border-radius:var(--r-sm);
+  font-family:var(--font-b);font-size:0.88rem;color:var(--c-text-deep);
+  background:#fff;resize:vertical;transition:var(--ease);line-height:1.62;
+}
+.notes-wrap textarea:focus{outline:none;border-color:var(--c-green-mid);box-shadow:0 0 0 3px rgba(45,106,79,0.1)}
+
+/* ===== TOC GRID ===== */
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:0.7rem;margin:1rem 0}
+.toc-item{
+  background:#fff;border:1px solid var(--c-border);border-radius:var(--r-sm);
+  padding:0.75rem;cursor:pointer;transition:var(--ease);text-decoration:none;display:block;
+}
+.toc-item:hover{border-color:var(--c-green-mid);background:var(--c-green-pale);transform:translateY(-2px);box-shadow:0 4px 14px var(--c-shadow)}
+.toc-item .tn{font-size:0.66rem;color:var(--c-text-light);margin-bottom:0.2rem;font-family:monospace}
+.toc-item .tt{font-size:0.88rem;font-family:var(--font-h);color:var(--c-green-deep);font-weight:600;line-height:1.3}
+.toc-item .tg{font-size:0.68rem;color:var(--c-text-light);margin-top:0.2rem}
+
+/* ===== HOW TO USE ===== */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:1rem;margin:1rem 0}
+.how-item{background:#fff;border:1px solid var(--c-border);border-radius:var(--r);padding:1.2rem;box-shadow:0 2px 8px var(--c-shadow)}
+.how-num{width:34px;height:34px;background:var(--c-gold);color:var(--c-green-deep);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;font-size:0.95rem;margin-bottom:0.7rem}
+.how-item h4{font-family:var(--font-h);color:var(--c-green-deep);margin-bottom:0.35rem;font-size:0.97rem}
+.how-item p{font-size:0.83rem;color:var(--c-text-mid);margin:0;line-height:1.6}
+
+/* ===== GLOSSARY ===== */
+.gloss-filter{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1rem}
+.gloss-letter{padding:3px 9px;border-radius:4px;font-size:0.75rem;cursor:pointer;border:1px solid var(--c-border);background:#fff;font-family:var(--font-h);font-weight:600;transition:var(--ease)}
+.gloss-letter:hover,.gloss-letter.active{background:var(--c-green-mid);color:#fff;border-color:var(--c-green-mid)}
+.gloss-grid{display:grid;gap:0.7rem}
+.gitem{background:#fff;border:1px solid var(--c-border);border-radius:var(--r-sm);padding:1rem 1.2rem}
+.gitem dt{font-family:var(--font-h);font-weight:700;color:var(--c-green-deep);font-size:1.05rem;margin-bottom:0.45rem;border-bottom:1px solid var(--c-border);padding-bottom:0.35rem;display:flex;align-items:center;justify-content:space-between;gap:0.5rem}
+.gitem dt .orig{font-size:0.68rem;color:var(--c-text-light);font-weight:400;font-family:var(--font-b);font-style:italic}
+.gitem dd{color:var(--c-text-mid);font-size:0.88rem;line-height:1.72}
+
+/* ===== ERROR / ALERT LISTS ===== */
+.err-list{list-style:none;padding:0}
+.err-list li{display:flex;gap:0.9rem;padding:0.7rem 0;border-bottom:1px solid var(--c-border);align-items:flex-start;font-size:0.93rem}
+.err-list li:last-child{border-bottom:none}
+.err-num{width:27px;height:27px;background:var(--c-burgundy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.73rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.err-body strong{display:block;color:var(--c-burgundy);font-family:var(--font-h);margin-bottom:0.2rem;font-size:0.95rem}
+.err-body p{color:var(--c-text-mid);font-size:0.86rem;margin:0;line-height:1.55}
+
+/* ===== WEEK CARDS ===== */
+.week-card{background:#fff;border:1px solid var(--c-border);border-radius:var(--r);overflow:hidden;margin-bottom:1rem;box-shadow:0 2px 8px var(--c-shadow)}
+.week-hdr{background:var(--c-green-deep);color:var(--c-gold);padding:0.7rem 1.2rem;font-family:var(--font-h);font-weight:700;display:flex;justify-content:space-between;align-items:center;font-size:0.95rem}
+.week-body{padding:1rem 1.2rem}
+.week-body ul{font-size:0.9rem;color:var(--c-text-mid)}
+.week-body li{margin-bottom:0.4rem;line-height:1.5}
+
+/* ===== THEOLOGICAL QUOTE ===== */
+.th-quote{
+  background:linear-gradient(135deg,var(--c-green-deep),#2d5a3d);
+  border-radius:var(--r);padding:2rem;color:#fff;text-align:center;
+  margin:2rem 0;position:relative;overflow:hidden;
+}
+.th-quote::before{content:'"';position:absolute;top:-1rem;left:1rem;font-size:6rem;color:var(--c-gold);opacity:0.2;font-family:Georgia;line-height:1;pointer-events:none}
+.th-quote p{font-size:1.12rem;font-style:italic;line-height:1.72;color:rgba(255,255,255,0.92);font-family:var(--font-h)}
+.th-quote cite{display:block;margin-top:1rem;font-size:0.82rem;color:var(--c-gold);font-style:normal}
+
+/* ===== BIB GRID ===== */
+.bib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.7rem;margin:0.75rem 0}
+.bib-item{background:#fff;border:1px solid var(--c-border);border-radius:var(--r-sm);padding:0.8rem;font-size:0.85rem}
+.bib-item strong{display:block;font-family:var(--font-h);color:var(--c-green-deep);font-size:0.9rem;margin-bottom:0.15rem;line-height:1.3}
+.bib-item em{color:var(--c-text-light);font-size:0.8rem;display:block;margin-bottom:0.3rem}
+.bib-item p{color:var(--c-text-mid);font-size:0.8rem;margin:0;line-height:1.5}
+
+/* ===== PRINT PROTECTION ===== */
+@media print{
+  body *{display:none!important;visibility:hidden!important}
+  body::before{
+    content:"Impressão desativada. Este conteúdo está disponível apenas para leitura online.";
+    display:block!important;
+    visibility:visible!important;
+    padding:2rem;
+    font-family:Arial,sans-serif;
+    font-size:18pt;
+    color:#111;
   }
-  function moduleTasksComplete(n) { return modulePct(n) === 100; }
-  function quizPassed(n) { return localStorage.getItem('quiz_m' + n + '_passed') === '1'; }
-  function quizScore(n) { return Number(localStorage.getItem('quiz_m' + n + '_score') || 0); }
-  function quizTotal(n) { return (QUIZZES[String(n)] || []).length; }
-  function passScore(n) { return Math.floor(quizTotal(n) / 2) + 1; }
-  function moduleApproved(n) { return moduleTasksComplete(n) && quizPassed(n); }
-  function moduleUnlocked(n) { return Number(n) === 1 || moduleApproved(Number(n) - 1); }
-  function nextUnlockedModule() {
-    for(let n=1; n<=maxModule; n++) if(moduleUnlocked(n) && !moduleApproved(n)) return n;
-    return maxModule;
-  }
-  function setText(id, txt) { const el = qs('#' + id); if(el) el.textContent = txt; }
+}
 
-  function updateProgress() {
-    const total = ALL_TASKS.length;
-    const done = ALL_TASKS.filter(isChecked).length;
-    const pct = total ? Math.round((done / total) * 100) : 0;
-    const approvedMods = Object.keys(MODULE_TASKS).filter(n => moduleApproved(Number(n))).length;
-    setText('pg-pct', pct + '%');
-    setText('pg-pct2', pct + '%');
-    setText('pg-done', done);
-    setText('pg-total', total);
-    setText('pg-mods', approvedMods);
-    setText('pg-approved', approvedMods);
-    setText('pg-next', String(nextUnlockedModule()).padStart(2, '0'));
-    setText('hdr-prog', pct + '% concluído');
-    const bar = qs('#pg-bar'); if(bar) bar.style.width = pct + '%';
-    Object.keys(MODULE_TASKS).forEach(n => {
-      const mp = modulePct(n);
-      const fill = qs('#mpp' + n); if(fill) fill.style.width = mp + '%';
-      const fill2 = qs('#mod-card-p' + n); if(fill2) fill2.style.width = mp + '%';
-      const txt = qs('#mod-card-t' + n); if(txt) txt.textContent = mp + '%';
-    });
-    updateModuleLocks();
-    updateCurrentModuleStatus();
-  }
+/* ===== RESPONSIVE ===== */
+@media (max-width:900px){
+  #sidebar{transform:translateX(-100%)}
+  #sidebar.open{transform:translateX(0)}
+  #sb-toggle{display:flex}
+  #main{margin-left:0;padding:1.25rem}
+}
+@media (max-width:600px){
+  :root{--header-h:54px}
+  #main{padding:0.9rem 0.9rem 3rem}
+  .cover{padding:2.5rem 1.5rem}
+  .cover::before{display:none}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .res-grid{grid-template-columns:1fr}
+  .ptable{font-size:0.76rem}
+  .toc-grid{grid-template-columns:1fr 1fr}
+  .how-grid{grid-template-columns:1fr}
+  .mod-info h3{font-size:1rem}
+}
 
-  function updateModuleLocks() {
-    qsa('[data-module-card]').forEach(card => {
-      const n = Number(card.dataset.moduleCard);
-      const unlocked = moduleUnlocked(n);
-      const approved = moduleApproved(n);
-      const taskPct = modulePct(n);
-      card.classList.toggle('module-locked', !unlocked);
-      card.classList.toggle('module-approved', approved);
-      const status = card.querySelector('.module-lock-status');
-      if(status) {
-        if(!unlocked) {
-          status.innerHTML = '🔒 Bloqueado · conclua e seja aprovado no módulo ' + String(n-1).padStart(2,'0');
-        } else if(approved) {
-          status.innerHTML = '✅ Aprovado · checklist 100% e avaliação concluída';
-        } else if(quizPassed(n)) {
-          status.innerHTML = '🟡 Prova aprovada · checklist ' + taskPct + '%';
-        } else {
-          status.innerHTML = '🔓 Liberado · checklist ' + taskPct + '% · prova pendente';
-        }
-      }
-    });
-    qsa('[data-module-link]').forEach(a => {
-      const n = Number(a.dataset.moduleLink);
-      if(!n) return;
-      const unlocked = moduleUnlocked(n);
-      a.classList.toggle('locked-link', !unlocked);
-      if(!unlocked) {
-        if(a.getAttribute('href')) a.dataset.originalHref = a.getAttribute('href');
-        a.removeAttribute('href');
-        a.setAttribute('aria-disabled', 'true');
-        a.title = 'Módulo bloqueado. Conclua e seja aprovado no módulo anterior.';
-      } else {
-        if(!a.getAttribute('href')) a.setAttribute('href', a.dataset.originalHref || ('modulo-' + String(n).padStart(2,'0') + '.html'));
-        a.removeAttribute('aria-disabled');
-        a.title = '';
-      }
-    });
-  }
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeUp 0.5s ease both}
 
-  function updateCurrentModuleStatus() {
-    const n = Number(document.body.dataset.module || 0);
-    if(!n) return;
-    const status = qs('#access-status-' + n);
-    if(status) {
-      const taskPct = modulePct(n);
-      const qPassed = quizPassed(n);
-      const approved = moduleApproved(n);
-      status.innerHTML = `<div class="module-status-strip ${approved ? 'approved' : ''}">
-        <div><strong>Status do Módulo ${String(n).padStart(2,'0')}</strong><span>Checklist: ${taskPct}% · Avaliação: ${qPassed ? 'aprovada' : 'pendente'}</span></div>
-        <div class="status-pill">${approved ? '✅ Aprovado' : '🔓 Em andamento'}</div>
-      </div>`;
-    }
-    const box = qs('#module-status-' + n);
-    if(box) {
-      const taskPct = modulePct(n);
-      const score = quizScore(n);
-      const total = quizTotal(n);
-      const required = passScore(n);
-      if(moduleApproved(n)) {
-        box.className = 'module-status-box status-approved';
-        box.innerHTML = `✅ <strong>Módulo aprovado.</strong> Checklist completo e avaliação aprovada com ${score}/${total}. O próximo módulo está liberado.`;
-      } else if(quizPassed(n) && !moduleTasksComplete(n)) {
-        box.className = 'module-status-box status-warning';
-        box.innerHTML = `🟡 <strong>Você já passou na avaliação</strong> (${score}/${total}), mas ainda precisa concluir o checklist. Checklist atual: ${taskPct}%.`;
-      } else {
-        box.className = 'module-status-box';
-        box.innerHTML = `🔐 Para liberar o próximo módulo: checklist 100% + avaliação com no mínimo ${required}/${total} acertos. Checklist atual: ${taskPct}%.`;
-      }
-    }
-    const unlock = qs('#unlock-next-' + n);
-    if(unlock) {
-      if(moduleApproved(n) && n < maxModule) unlock.innerHTML = `<a class="link-btn" data-module-link="${n+1}" href="modulo-${String(n+1).padStart(2,'0')}.html">Avançar para o Módulo ${String(n+1).padStart(2,'0')} →</a>`;
-      else if(moduleApproved(n) && n === maxModule) unlock.innerHTML = '<div class="module-status-box status-approved">🎓 Parabéns! Você concluiu a trilha principal.</div>';
-      else unlock.innerHTML = '';
-    }
-  }
 
-  function renderQuiz(n) {
-    const root = qs('#quiz-questions-' + n);
-    if(!root) return;
-    const questions = QUIZZES[String(n)] || [];
-    root.innerHTML = questions.map((item, idx) => {
-      const saved = localStorage.getItem(`quiz_m${n}_q${idx}`);
-      const opts = item.options.map((op, oi) => `
-        <label class="quiz-option">
-          <input type="radio" name="quiz-m${n}-q${idx}" value="${oi}" ${saved === String(oi) ? 'checked' : ''}>
-          <span>${op}</span>
-        </label>`).join('');
-      return `<div class="quiz-question" data-question="${idx}">
-        <h5>${idx+1}. ${item.q}</h5>
-        <div class="quiz-options">${opts}</div>
-      </div>`;
-    }).join('');
-    root.querySelectorAll('input[type="radio"]').forEach(inp => {
-      inp.addEventListener('change', () => {
-        const m = inp.name.match(/quiz-m(\d+)-q(\d+)/);
-        if(m) localStorage.setItem(`quiz_m${m[1]}_q${m[2]}`, inp.value);
-      });
-    });
-    showQuizResult(n, false);
-  }
+/* ===== CONTRASTE E LEGIBILIDADE REFORÇADOS ===== */
+body{
+  font-size:18px;
+  letter-spacing:0.01em;
+}
+p, li, dd, td{
+  color:var(--c-text-mid);
+}
+strong{
+  color:var(--c-green-deep);
+}
+#main-header,
+#sidebar,
+.week-hdr,
+.ptable th{
+  background:var(--c-green-deep);
+}
+#main-header{
+  border-bottom:2px solid rgba(240,201,74,0.55);
+}
+#main-header h1{
+  color:var(--c-gold-light);
+  text-shadow:0 1px 1px rgba(0,0,0,0.25);
+}
+#main-header h1 small{
+  color:rgba(255,255,255,0.78);
+}
+.hdr-pill{
+  color:var(--c-gold-light);
+  border-color:rgba(255,226,122,0.65);
+  background:rgba(255,255,255,0.10);
+}
+.hdr-btn{
+  color:#ffffff;
+  background:rgba(255,255,255,0.12);
+  border-color:rgba(255,255,255,0.30);
+}
+#sidebar{
+  box-shadow:6px 0 22px rgba(7,26,18,0.18);
+}
+.sb-section{
+  color:rgba(255,226,122,0.82);
+}
+.sb-link{
+  color:rgba(255,255,255,0.90);
+  font-weight:600;
+}
+.sb-link:hover,
+.sb-link.active{
+  color:var(--c-gold-light);
+  background:rgba(255,255,255,0.10);
+}
+.sb-link .sb-num{
+  color:var(--c-gold-light);
+  background:rgba(240,201,74,0.22);
+}
+.cover{
+  box-shadow:0 16px 36px rgba(7,26,18,0.22);
+}
+.cover h1{
+  color:#ffffff;
+  text-shadow:0 2px 4px rgba(0,0,0,0.30);
+}
+.cover h1 em,
+.cs .n,
+.week-hdr,
+.ptable th{
+  color:var(--c-gold-light);
+}
+.cover .cover-sub{
+  color:rgba(255,255,255,0.92);
+  font-weight:500;
+}
+.cover-badge{
+  color:var(--c-gold-light);
+  background:rgba(240,201,74,0.22);
+  border-color:rgba(255,226,122,0.78);
+}
+.sec-title,
+.subsec,
+.mod-info h3,
+.gitem dt,
+.bib-item strong,
+.how-item h4,
+.toc-item .tt,
+.res-item strong{
+  color:var(--c-green-deep);
+}
+.sec-intro,
+.res-item .rn,
+.bib-item p,
+.how-item p,
+.err-body p,
+.week-body ul,
+.gitem dd{
+  color:var(--c-text-mid);
+}
+.res-item .rm,
+.toc-item .tg,
+.toc-item .tn,
+.stat-card .sl{
+  color:var(--c-text-light);
+}
+.card,
+.mod-card,
+.stat-card,
+.how-item,
+.gitem,
+.res-item,
+.bib-item,
+.week-card,
+.toc-item{
+  border-color:#d2c3aa;
+  box-shadow:0 3px 16px rgba(7,26,18,0.10);
+}
+.btn-green,
+.btn-outline:hover,
+.ftab:hover,
+.ftab.active,
+.prog-fill,
+.mod-num,
+.exlist li::before{
+  background:var(--c-green-mid);
+}
+.btn-green,
+.btn-outline:hover,
+.ftab:hover,
+.ftab.active,
+.mod-num,
+.exlist li::before{
+  color:#ffffff;
+}
+.btn-outline,
+a{
+  color:#0b4a2c;
+}
+.btn-outline{
+  border-color:#0b4a2c;
+}
+.btn-complete{
+  background:#d5eadc;
+  color:#071a12;
+  border-color:#0f3f2a;
+  font-weight:700;
+}
+.btn-complete:hover,
+.btn-complete.done{
+  background:#0f3f2a;
+  color:#ffffff;
+}
+.box{
+  color:var(--c-text-mid);
+}
+.box-info,
+.box-video,
+.box-academic,
+.box-reflect,
+.box-ex,
+.box-persp,
+.box-bible,
+.box-warn{
+  box-shadow:0 2px 10px rgba(7,26,18,0.06);
+}
+.cklist label{
+  color:var(--c-text-mid);
+}
+.cklist input:checked + label{
+  color:#6b5b4b;
+}
+.notes-wrap textarea{
+  color:var(--c-text-deep);
+  background:#ffffff;
+  border-color:#c8b89d;
+}
+.notes-wrap textarea::placeholder{
+  color:#7a6652;
+}
+@media (max-width:600px){
+  body{font-size:17px;}
+  .hdr-pill{display:none;}
+}
 
-  function showQuizResult(n, forceShow) {
-    const result = qs('#quiz-result-' + n);
-    if(!result) return;
-    const total = quizTotal(n);
-    const scoreSaved = localStorage.getItem('quiz_m' + n + '_score');
-    const passed = quizPassed(n);
-    if(scoreSaved === null && !forceShow) { result.innerHTML = ''; return; }
-    const score = quizScore(n);
-    const required = passScore(n);
-    const taskPct = modulePct(n);
-    result.className = 'quiz-result ' + (passed ? 'passed' : 'failed');
-    if(passed) {
-      if(moduleTasksComplete(n)) result.innerHTML = `✅ Aprovado na avaliação: ${score}/${total} acertos. Como o checklist também está completo, o próximo módulo foi liberado.`;
-      else result.innerHTML = `✅ Você passou na avaliação: ${score}/${total} acertos. Falta concluir o checklist para liberar o próximo módulo. Checklist atual: ${taskPct}%.`;
-    } else {
-      result.innerHTML = `❌ Resultado: ${score}/${total} acertos. Para ser aprovado, precisa acertar mais da metade: no mínimo ${required}. Revise o módulo e tente novamente.`;
-    }
-  }
 
-  window.submitQuiz = function(n) {
-    const questions = QUIZZES[String(n)] || [];
-    let score = 0;
-    let missing = 0;
-    questions.forEach((item, idx) => {
-      const checked = qs(`input[name="quiz-m${n}-q${idx}"]:checked`);
-      if(!checked) { missing++; return; }
-      localStorage.setItem(`quiz_m${n}_q${idx}`, checked.value);
-      if(Number(checked.value) === item.answer) score++;
-    });
-    const result = qs('#quiz-result-' + n);
-    if(missing) {
-      if(result) { result.className = 'quiz-result failed'; result.innerHTML = '⚠️ Responda todas as questões antes de enviar a avaliação.'; }
-      return;
-    }
-    const passed = score >= passScore(n);
-    localStorage.setItem('quiz_m' + n + '_score', String(score));
-    localStorage.setItem('quiz_m' + n + '_passed', passed ? '1' : '0');
-    showQuizResult(n, true);
-    updateProgress();
-  };
+/* ===== CONTENT PROTECTION / READABILITY ===== */
+body:not(input):not(textarea){
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+#main, #sidebar, #main-header{
+  -webkit-user-select:none;
+  user-select:none;
+}
+textarea, input, a, button{
+  -webkit-user-select:auto;
+  user-select:auto;
+}
 
-  window.resetQuiz = function(n) {
-    if(!confirm('Deseja refazer a avaliação deste módulo? A pontuação anterior será apagada.')) return;
-    localStorage.removeItem('quiz_m' + n + '_score');
-    localStorage.removeItem('quiz_m' + n + '_passed');
-    (QUIZZES[String(n)] || []).forEach((_, idx) => localStorage.removeItem(`quiz_m${n}_q${idx}`));
-    qsa(`#quiz-questions-${n} input[type="radio"]`).forEach(inp => inp.checked = false);
-    const result = qs('#quiz-result-' + n); if(result) result.innerHTML = '';
-    updateProgress();
-  };
 
-  window.onCheck = function(el) { setChecked(el.id, el.checked); updateProgress(); };
 
-  window.resetAll = function() {
-    if(!confirm('Tem certeza que deseja zerar todo o progresso, avaliações, exercícios e anotações salvas?')) return;
-    Object.keys(localStorage).forEach(k => {
-      if(k.startsWith('task_') || k.startsWith('notes_') || k.startsWith('exercise_') || k.startsWith('quiz_')) localStorage.removeItem(k);
-    });
-    qsa('.task-check').forEach(el => el.checked = false);
-    qsa('.notes-field, .exercise-field').forEach(el => el.value = '');
-    qsa('.quiz-result').forEach(el => el.innerHTML = '');
-    qsa('.quiz-questions input[type="radio"]').forEach(el => el.checked = false);
-    updateProgress();
-  };
+/* ===== MULTI-PAGE ORGANIZATION OVERRIDES ===== */
+body.site-split{background:var(--c-parchment);}
+body.site-split #main-header{
+  position:sticky;
+  top:0;
+  height:auto;
+  min-height:66px;
+  flex-wrap:wrap;
+  padding:.75rem 1.25rem;
+}
+body.site-split #main-header h1{font-size:1.08rem;min-width:240px;}
+.top-nav{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;justify-content:flex-end;}
+.top-nav a{
+  display:inline-flex;align-items:center;gap:.25rem;
+  padding:.38rem .78rem;border-radius:999px;
+  border:1px solid rgba(232,197,71,.38);
+  background:rgba(255,255,255,.07);
+  color:rgba(255,255,255,.9);
+  font-size:.78rem;font-family:var(--font-h);font-weight:700;
+  line-height:1;text-decoration:none;transition:var(--ease);
+}
+.top-nav a:hover,.top-nav a.active{background:var(--c-gold);color:var(--c-green-deep);border-color:var(--c-gold);}
+body.site-split #sidebar, body.site-split #sb-overlay{display:none!important;}
+body.site-split #main{
+  margin:0 auto;
+  padding:2rem 1.25rem 4rem;
+  max-width:1120px;
+}
+.page-hero{
+  background:linear-gradient(135deg,var(--c-green-deep),#092416);
+  border-radius:var(--r);padding:2rem;margin-bottom:1.4rem;color:#fff;
+  border:1px solid rgba(232,197,71,.24);box-shadow:0 10px 28px var(--c-shadow);
+}
+.page-hero h2{font-family:var(--font-h);font-size:clamp(1.45rem,3vw,2.35rem);line-height:1.16;margin-bottom:.5rem;color:#fff;}
+.page-hero p{max-width:760px;color:rgba(255,255,255,.82);font-size:1rem;line-height:1.65;}
+.breadcrumb{font-size:.78rem;margin-bottom:.75rem;color:rgba(255,255,255,.68);font-family:var(--font-h);}
+.breadcrumb a{color:var(--c-gold);}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin:1.2rem 0;}
+.quick-card{display:block;background:var(--c-ivory);border:1px solid var(--c-border);border-radius:var(--r);padding:1.1rem;box-shadow:0 2px 12px var(--c-shadow);transition:var(--ease);text-decoration:none;}
+.quick-card:hover{transform:translateY(-2px);border-color:var(--c-green-mid);box-shadow:0 8px 22px var(--c-shadow);}
+.quick-card strong{display:block;font-family:var(--font-h);font-size:1rem;color:var(--c-green-deep);margin-bottom:.25rem;}
+.quick-card span{display:block;color:var(--c-text-mid);font-size:.86rem;line-height:1.5;}
+.module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1rem;margin:1.2rem 0;}
+.module-index-card{background:var(--c-ivory);border:1px solid var(--c-border);border-radius:var(--r);padding:1rem;box-shadow:0 2px 12px var(--c-shadow);display:flex;flex-direction:column;gap:.65rem;}
+.module-index-card h3{font-family:var(--font-h);color:var(--c-green-deep);font-size:1.02rem;line-height:1.28;margin:0;}
+.module-index-top{display:flex;align-items:flex-start;gap:.75rem;}
+.module-index-num{min-width:38px;height:38px;background:var(--c-green-deep);color:var(--c-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:900;font-size:.92rem;}
+.module-index-meta{font-size:.78rem;color:var(--c-text-light);line-height:1.45;}
+.module-index-actions{margin-top:auto;display:flex;gap:.5rem;align-items:center;justify-content:space-between;}
+.link-btn{display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r-sm);padding:.45rem .82rem;background:var(--c-green-mid);color:#fff!important;font-family:var(--font-h);font-weight:700;font-size:.82rem;text-decoration:none;transition:var(--ease);}
+.link-btn:hover{background:var(--c-green-deep);transform:translateY(-1px);}
+.module-nav{display:flex;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin:1.4rem 0;}
+.module-nav a{max-width:48%;}
+.single-module .mod-card{border-left:4px solid var(--c-green-mid);}
+.single-module .mod-header{cursor:default;background:rgba(45,106,79,.035);}
+.single-module .mod-body{max-height:none!important;overflow:visible!important;}
+.single-module .mod-arrow{display:none;}
+.single-module .mod-mini-prog{padding-top:.7rem;}
+.footer-site{max-width:1120px;margin:0 auto 2rem;padding:1rem 1.25rem;color:var(--c-text-light);font-size:.78rem;text-align:center;}
+.section-stack{display:grid;gap:1.1rem;}
+.notice-small{font-size:.82rem;color:var(--c-text-light);line-height:1.55;}
+.no-print-ui{display:none!important;}
+@media print{body{display:none!important}}
+@media (max-width:720px){
+  body.site-split #main-header{align-items:flex-start;}
+  .top-nav{justify-content:flex-start;width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:.15rem;}
+  .top-nav a{white-space:nowrap;}
+  body.site-split #main{padding:1rem .85rem 3rem;}
+  .module-nav a{max-width:100%;width:100%;}
+  .page-hero{padding:1.4rem;}
+}
 
-  window.filterMods = function(btn, area) {
-    qsa('.ftab').forEach(b => b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-    qsa('.module-index-card, .mod-card').forEach(card => {
-      const areas = (card.dataset.areas || '').split(/\s+/);
-      card.style.display = (area === 'all' || areas.includes(area)) ? '' : 'none';
-    });
-  };
 
-  function enforceCurrentModuleAccess() {
-    const n = Number(document.body.dataset.module || 0);
-    if(!n || moduleUnlocked(n)) return;
-    const main = qs('#main');
-    const prev = n - 1;
-    if(main) {
-      main.innerHTML = `<section class="page-hero"><div class="breadcrumb"><a href="index.html">Início</a> / <a href="modulos.html">Módulos</a> / Módulo ${String(n).padStart(2,'0')}</div><h2>🔒 Módulo bloqueado</h2><p>Este módulo ainda não está disponível. Para liberar, conclua o checklist do Módulo ${String(prev).padStart(2,'0')} e seja aprovado na avaliação dele.</p></section>
-      <div class="locked-panel"><h3>O que falta?</h3><p>O sistema libera os módulos em sequência. Volte ao módulo anterior, finalize as tarefas e acerte mais da metade das questões.</p><a class="link-btn" href="modulo-${String(prev).padStart(2,'0')}.html">Voltar ao Módulo ${String(prev).padStart(2,'0')}</a> <a class="link-btn secondary" href="modulos.html">Ver todos os módulos</a></div>`;
-    }
-  }
-
-  function setupStorageFields() {
-    qsa('.task-check').forEach(el => { el.checked = isChecked(el.id); });
-    qsa('.notes-field').forEach(el => {
-      const key = 'notes_' + el.dataset.mod;
-      el.value = localStorage.getItem(key) || '';
-      el.addEventListener('input', () => localStorage.setItem(key, el.value));
-    });
-    qsa('.exercise-field').forEach(el => {
-      const key = 'exercise_' + el.dataset.exercise;
-      const count = qs('#ex-count-' + el.dataset.exercise);
-      const updateCount = () => { if(count) count.textContent = (el.value || '').length + ' caracteres'; };
-      el.value = localStorage.getItem(key) || '';
-      updateCount();
-      el.addEventListener('input', () => { localStorage.setItem(key, el.value); updateCount(); });
-    });
-  }
-
-  function showProtectionMessage() { alert('Este conteúdo não está liberado para impressão ou salvamento em PDF. O acesso é somente pela plataforma.'); }
-  document.addEventListener('keydown', (event) => {
-    const key = event.key.toLowerCase();
-    if((event.ctrlKey || event.metaKey) && (key === 'p' || key === 's')) { event.preventDefault(); showProtectionMessage(); }
-  });
-  window.addEventListener('beforeprint', showProtectionMessage);
-  document.addEventListener('contextmenu', (event) => { if(!event.target.closest('textarea, input, a, button, label')) event.preventDefault(); });
-
-  document.addEventListener('DOMContentLoaded', () => {
-    setupStorageFields();
-    const n = Number(document.body.dataset.module || 0);
-    if(n) {
-      enforceCurrentModuleAccess();
-      if(moduleUnlocked(n)) renderQuiz(n);
-    }
-    updateProgress();
-  });
-})();
+/* ===== PLATFORM EXERCISES + MODULE LOCKING ===== */
+.single-module .mod-body{max-height:none!important;overflow:visible!important;}
+.single-module .mod-header{cursor:default;background:rgba(15,63,42,.04);}
+.single-module .mod-arrow{display:none;}
+.exercise-lab{display:grid;gap:1rem;margin:1rem 0 1.5rem;}
+.exercise-card{background:#fff;border:1px solid var(--c-border);border-radius:var(--r);padding:1rem;box-shadow:0 2px 12px var(--c-shadow);}
+.exercise-card label{display:block;margin-bottom:.65rem;}
+.exercise-card label strong{display:block;font-family:var(--font-h);color:var(--c-green-deep);font-size:1rem;margin-bottom:.2rem;}
+.exercise-card label span{display:block;color:var(--c-text-mid);font-size:.92rem;line-height:1.55;}
+.exercise-field{width:100%;min-height:150px;border:1px solid var(--c-border);border-radius:var(--r-sm);padding:.8rem;background:var(--c-ivory);font-family:var(--font-b);font-size:.95rem;line-height:1.65;color:var(--c-text-deep);resize:vertical;transition:var(--ease);}
+.exercise-field:focus{outline:none;border-color:var(--c-green-mid);box-shadow:0 0 0 3px rgba(15,63,42,.12);background:#fff;}
+.exercise-foot{display:flex;justify-content:space-between;gap:.8rem;flex-wrap:wrap;margin-top:.45rem;color:var(--c-text-light);font-size:.76rem;}
+.quiz-panel{background:var(--c-ivory);border:1px solid var(--c-border);border-radius:var(--r);padding:1.25rem;margin:1.5rem 0;box-shadow:0 4px 18px var(--c-shadow);}
+.quiz-questions{display:grid;gap:1rem;margin:1rem 0;}
+.quiz-question{background:#fff;border:1px solid var(--c-border);border-radius:var(--r-sm);padding:1rem;}
+.quiz-question h5{font-family:var(--font-h);color:var(--c-green-deep);font-size:.98rem;margin-bottom:.65rem;line-height:1.42;}
+.quiz-options{display:grid;gap:.45rem;}
+.quiz-option{display:flex;align-items:flex-start;gap:.55rem;padding:.55rem .65rem;border:1px solid #eadfcf;border-radius:var(--r-sm);background:var(--c-ivory);cursor:pointer;transition:var(--ease);}
+.quiz-option:hover{border-color:var(--c-green-mid);background:#fff;}
+.quiz-option input{margin-top:.28rem;accent-color:var(--c-green-mid);}
+.quiz-option span{font-size:.91rem;line-height:1.45;color:var(--c-text-mid);}
+.quiz-actions{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:.9rem;}
+.quiz-result{margin-top:1rem;padding:.85rem 1rem;border-radius:var(--r-sm);font-weight:700;display:block;}
+.quiz-result:empty{display:none;}
+.quiz-result.passed{background:#e8f7ed;border:1px solid #83c99c;color:#0b4a27;}
+.quiz-result.failed{background:#fff0f0;border:1px solid #e2a4a4;color:#7a2c2c;}
+.module-status-box{background:#f7fbf8;border:1px solid #cfe3d6;border-left:4px solid var(--c-green-mid);border-radius:var(--r-sm);padding:.85rem 1rem;margin:.85rem 0;color:var(--c-text-mid);font-size:.9rem;line-height:1.55;}
+.module-status-box.status-approved{background:#e8f7ed;border-color:#83c99c;color:#0b4a27;}
+.module-status-box.status-warning{background:#fff8dc;border-color:#e0c45e;color:#6d5200;}
+.module-status-strip{display:flex;justify-content:space-between;align-items:center;gap:1rem;background:var(--c-ivory);border:1px solid var(--c-border);border-left:4px solid var(--c-gold);border-radius:var(--r);padding:.9rem 1rem;margin-bottom:1rem;box-shadow:0 2px 12px var(--c-shadow);}
+.module-status-strip.approved{border-left-color:#2d8c4c;background:#f0fbf4;}
+.module-status-strip strong{display:block;font-family:var(--font-h);color:var(--c-green-deep);}
+.module-status-strip span{display:block;font-size:.82rem;color:var(--c-text-mid);}
+.status-pill{white-space:nowrap;border-radius:999px;padding:.34rem .72rem;background:var(--c-green-deep);color:var(--c-gold);font-family:var(--font-h);font-size:.78rem;font-weight:700;}
+.module-lock-status{font-size:.8rem;line-height:1.45;border-radius:var(--r-sm);padding:.5rem .65rem;background:#f6efe3;color:var(--c-text-mid);border:1px solid #eadfcf;}
+.module-index-card.module-locked{opacity:.72;filter:grayscale(.35);}
+.module-index-card.module-locked .module-index-num{background:#4b4b4b;color:#eee;}
+.module-index-card.module-approved{border-color:#93c9a5;background:#f7fff9;}
+.locked-link{background:#777!important;color:#eee!important;cursor:not-allowed!important;pointer-events:auto;}
+.locked-link::before{content:'🔒 ';}
+.locked-panel{background:var(--c-ivory);border:1px solid var(--c-border);border-left:5px solid var(--c-burgundy);border-radius:var(--r);padding:1.4rem;box-shadow:0 4px 18px var(--c-shadow);}
+.locked-panel h3{font-family:var(--font-h);color:var(--c-burgundy);margin-bottom:.4rem;}
+.locked-panel p{color:var(--c-text-mid);margin-bottom:1rem;}
+.link-btn.secondary{background:var(--c-text-light)!important;}
+.unlock-next{margin-top:1rem;}
+.approval-summary h3.subsec{margin-top:0;}
+@media (max-width:720px){.module-status-strip{align-items:flex-start;flex-direction:column}.status-pill{white-space:normal}.quiz-actions .btn{width:100%;justify-content:center}}
