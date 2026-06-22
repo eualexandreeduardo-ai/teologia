@@ -62,6 +62,67 @@ with check (auth.uid() = user_id);
 
 `progress_data` guarda checklists, exercícios, respostas de avaliação, notas, módulos aprovados, módulos liberados, percentual e último módulo estudado. Uma cópia local também é mantida para uso sem internet.
 
+## Salvar os dados de cadastro do aluno
+
+O cadastro separado (`cadastro.html`) coleta nome, sobrenome, data de nascimento, telefone, e-mail e senha. E-mail e senha pertencem ao Supabase Auth; os demais dados são enviados aos metadados do usuário. Para manter uma tabela de perfil com RLS, execute também este SQL no **SQL Editor**:
+
+```sql
+create table if not exists public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text,
+  first_name text,
+  last_name text,
+  phone text,
+  birth_date date,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.profiles enable row level security;
+
+create policy "Usuário vê apenas o próprio perfil"
+on public.profiles for select
+using (auth.uid() = id);
+
+create policy "Usuário atualiza apenas o próprio perfil"
+on public.profiles for update
+using (auth.uid() = id)
+with check (auth.uid() = id);
+
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  insert into public.profiles (id, email, first_name, last_name, phone, birth_date)
+  values (
+    new.id,
+    new.email,
+    new.raw_user_meta_data ->> 'first_name',
+    new.raw_user_meta_data ->> 'last_name',
+    new.raw_user_meta_data ->> 'phone',
+    nullif(new.raw_user_meta_data ->> 'birth_date', '')::date
+  )
+  on conflict (id) do update set
+    email = excluded.email,
+    first_name = excluded.first_name,
+    last_name = excluded.last_name,
+    phone = excluded.phone,
+    birth_date = excluded.birth_date,
+    updated_at = now();
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
+```
+
+Esses dados são pessoais. Colete apenas o necessário, mantenha o RLS ativo e não os exponha em páginas públicas ou no repositório.
+
 ## Testar localmente
 
 Depois de configurar o Supabase, abra `login.html` com um servidor local. Caso tenha Node.js:

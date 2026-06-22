@@ -1,5 +1,7 @@
 (() => {
   const isLoginPage = () => /login\.html$/i.test(window.location.pathname);
+  const isSignUpPage = () => /cadastro\.html$/i.test(window.location.pathname);
+  const isPublicAuthPage = () => isLoginPage() || isSignUpPage();
   const loginUrl = 'login.html';
 
   const message = (text, type = 'error') => {
@@ -36,7 +38,7 @@
   }
 
   async function requireAuth() {
-    if (isLoginPage()) return null;
+    if (isPublicAuthPage()) return null;
     if (!configured()) {
       window.location.replace(loginUrl + '?config=1');
       return null;
@@ -68,9 +70,20 @@
     window.location.replace('index.html');
   }
 
-  async function signUp(email, password) {
+  async function signUp({ email, password, firstName, lastName, phone, birthDate }) {
     if (!configured()) return message('Configure SUPABASE_URL e SUPABASE_ANON_KEY em assets/supabase-config.js.');
-    const { data, error } = await window.supabaseClient.auth.signUp({ email, password });
+    const { data, error } = await window.supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          phone,
+          birth_date: birthDate
+        }
+      }
+    });
     if (error) return message(error.message);
     if (data.session) {
       message('Conta criada com sucesso. Redirecionando...', 'success');
@@ -100,9 +113,8 @@
   window.syncProgress = syncProgress;
 
   document.addEventListener('DOMContentLoaded', async () => {
-    if (isLoginPage()) {
+    if (isPublicAuthPage()) {
       const form = document.querySelector('#login-form');
-      const signUpButton = document.querySelector('#signup-button');
       if (new URLSearchParams(window.location.search).has('config')) {
         message('Antes de entrar, configure os dados públicos do Supabase.', 'error');
       }
@@ -110,15 +122,23 @@
         const user = await getCurrentUser();
         if (user) window.location.replace('index.html');
       }
-      form?.addEventListener('submit', event => {
+      if (isLoginPage()) {
+        form?.addEventListener('submit', event => {
+          event.preventDefault();
+          login(form.email.value.trim(), form.password.value);
+        });
+      }
+      const signupForm = document.querySelector('#signup-form');
+      signupForm?.addEventListener('submit', event => {
         event.preventDefault();
-        login(form.email.value.trim(), form.password.value);
-      });
-      signUpButton?.addEventListener('click', () => {
-        const email = form?.email.value.trim();
-        const password = form?.password.value;
-        if (!email || !password) return message('Informe e-mail e senha para criar a conta.');
-        signUp(email, password);
+        signUp({
+          email: signupForm.email.value.trim(),
+          password: signupForm.password.value,
+          firstName: signupForm.firstName.value.trim(),
+          lastName: signupForm.lastName.value.trim(),
+          phone: signupForm.phone.value.trim(),
+          birthDate: signupForm.birthDate.value
+        });
       });
       return;
     }
