@@ -1,2 +1,0 @@
-# teologia
-curso de teologia
