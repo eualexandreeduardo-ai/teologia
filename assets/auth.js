@@ -1,16 +1,8 @@
 (() => {
-  function pageName() {
-    const path = window.location.pathname.toLowerCase().replace(/\/+$/, '');
-    const last = path.split('/').pop() || 'index';
-    return last.replace(/\.html$/, '');
-  }
-
-  const currentPage = pageName;
-  const isLoginPage = () => currentPage() === 'login';
-  const isSignUpPage = () => currentPage() === 'cadastro';
+  const isLoginPage = () => /login\.html$/i.test(window.location.pathname);
+  const isSignUpPage = () => /cadastro\.html$/i.test(window.location.pathname);
   const isPublicAuthPage = () => isLoginPage() || isSignUpPage();
   const loginUrl = 'login.html';
-  const homeUrl = 'index.html';
 
   const message = (text, type = 'error') => {
     const el = document.querySelector('#auth-message');
@@ -33,8 +25,16 @@
     const area = document.createElement('div');
     area.className = 'auth-area';
     area.id = 'auth-area';
-    area.innerHTML = `<span class="auth-user" title="${user.email}">${user.email}</span><button class="logout-btn" type="button">Sair</button>`;
-    area.querySelector('.logout-btn').addEventListener('click', logout);
+    const email = document.createElement('span');
+    email.className = 'auth-user';
+    email.title = user.email || '';
+    email.textContent = user.email || 'Aluno';
+    const button = document.createElement('button');
+    button.className = 'logout-btn';
+    button.type = 'button';
+    button.textContent = 'Sair';
+    button.addEventListener('click', logout);
+    area.append(email, button);
     header.appendChild(area);
   }
 
@@ -45,21 +45,16 @@
     if (lastModule) lastModule.textContent = `Módulo ${String(progress.last_module || 1).padStart(2, '0')}`;
   }
 
-  function redirectToLogin(reason = '') {
-    const target = reason ? `${loginUrl}?${reason}=1` : loginUrl;
-    if (!isLoginPage()) window.location.replace(target);
-  }
-
   async function requireAuth() {
     if (isPublicAuthPage()) return null;
     if (!configured()) {
-      redirectToLogin('config');
+      window.location.replace(loginUrl + '?config=1');
       return null;
     }
     try {
       const user = await getCurrentUser();
       if (!user) {
-        redirectToLogin();
+        window.location.replace(loginUrl);
         return null;
       }
       addUserHeader(user);
@@ -70,7 +65,7 @@
       return user;
     } catch (error) {
       console.error('Falha ao verificar autenticação.', error);
-      redirectToLogin();
+      window.location.replace(loginUrl);
       return null;
     }
   }
@@ -80,7 +75,7 @@
     const { error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
     if (error) return message(error.message);
     message('Login realizado. Redirecionando...', 'success');
-    window.location.replace(homeUrl);
+    window.location.replace('index.html');
   }
 
   async function signUp({ email, password, firstName, lastName, phone, birthDate }) {
@@ -89,6 +84,7 @@
       email,
       password,
       options: {
+        emailRedirectTo: `${window.location.origin}/login.html`,
         data: {
           first_name: firstName,
           last_name: lastName,
@@ -100,7 +96,7 @@
     if (error) return message(error.message);
     if (data.session) {
       message('Conta criada com sucesso. Redirecionando...', 'success');
-      window.location.replace(homeUrl);
+      window.location.replace('index.html');
     } else {
       message('Conta criada. Confira seu e-mail para confirmar o cadastro antes de entrar.', 'success');
     }
@@ -113,7 +109,7 @@
 
   async function syncProgress() {
     const status = document.querySelector('#sync-status');
-    if (status) status.textContent = 'Sincronizando...';
+    if (status) status.textContent = 'Sincronizando…';
     const result = await window.AcademyProgressCloud?.saveProgress();
     if (!status) return result;
     if (result?.saved) status.textContent = 'Progresso sincronizado com sucesso.';
@@ -127,39 +123,38 @@
 
   document.addEventListener('DOMContentLoaded', async () => {
     if (isPublicAuthPage()) {
+      const form = document.querySelector('#login-form');
       if (new URLSearchParams(window.location.search).has('config')) {
         message('Antes de entrar, configure os dados públicos do Supabase.', 'error');
       }
       if (configured()) {
         const user = await getCurrentUser();
-        if (user) {
-          window.location.replace(homeUrl);
-          return;
-        }
+        if (user) window.location.replace('index.html');
       }
-
-      const loginForm = document.querySelector('#login-form');
       if (isLoginPage()) {
-        loginForm?.addEventListener('submit', event => {
+        form?.addEventListener('submit', event => {
           event.preventDefault();
-          login(loginForm.email.value.trim(), loginForm.password.value);
+          login(form.email.value.trim(), form.password.value);
         });
       }
-
       const signupForm = document.querySelector('#signup-form');
-      if (isSignUpPage()) {
-        signupForm?.addEventListener('submit', event => {
-          event.preventDefault();
-          signUp({
-            email: signupForm.email.value.trim(),
-            password: signupForm.password.value,
-            firstName: signupForm.firstName.value.trim(),
-            lastName: signupForm.lastName.value.trim(),
-            phone: signupForm.phone.value.trim(),
-            birthDate: signupForm.birthDate.value
-          });
+      signupForm?.addEventListener('submit', event => {
+        event.preventDefault();
+        if (signupForm.password.value.length < 12) {
+          return message('Use uma senha com pelo menos 12 caracteres.');
+        }
+        if (signupForm.password.value !== signupForm.confirmPassword.value) {
+          return message('As senhas não coincidem.');
+        }
+        signUp({
+          email: signupForm.email.value.trim(),
+          password: signupForm.password.value,
+          firstName: signupForm.firstName.value.trim(),
+          lastName: signupForm.lastName.value.trim(),
+          phone: signupForm.phone.value.trim(),
+          birthDate: signupForm.birthDate.value
         });
-      }
+      });
       return;
     }
     requireAuth();
