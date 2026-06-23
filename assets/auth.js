@@ -141,8 +141,8 @@
       const signupForm = document.querySelector('#signup-form');
       signupForm?.addEventListener('submit', event => {
         event.preventDefault();
-        if (signupForm.password.value.length < 12) {
-          return message('Use uma senha com pelo menos 12 caracteres.');
+        if (signupForm.password.value.length < 6) {
+          return message('Use uma senha com pelo menos 6 caracteres.');
         }
         if (signupForm.password.value !== signupForm.confirmPassword.value) {
           return message('As senhas não coincidem.');
