@@ -1,6 +1,8 @@
 (() => {
-  const isLoginPage = () => /login\.html$/i.test(window.location.pathname);
-  const isSignUpPage = () => /cadastro\.html$/i.test(window.location.pathname);
+  // A Vercel usa clean URLs em produção (/login), enquanto o servidor local
+  // normalmente usa /login.html. Aceitar ambos evita redirecionamento em loop.
+  const isLoginPage = () => /(?:^|\/)login(?:\.html)?\/?$/i.test(window.location.pathname);
+  const isSignUpPage = () => /(?:^|\/)cadastro(?:\.html)?\/?$/i.test(window.location.pathname);
   const isPublicAuthPage = () => isLoginPage() || isSignUpPage();
   const loginUrl = 'login.html';
 
