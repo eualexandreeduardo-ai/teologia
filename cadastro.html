@@ -1,9 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Criar conta — Academia Teológica do zero ao saber</title>
-<meta name="description" content="Cadastro de aluno.">
-<link href="assets/style.css" rel="stylesheet">
-</head><body class="login-page"><main class="login-shell"><section class="login-brand"><span class="login-kicker">Novo aluno</span><h1>Comece em 21 dias</h1><p>Crie sua conta para salvar o progresso.</p></section><section class="login-card"><h2>Criar conta</h2><p>Preencha seus dados.</p><form id="signup-form"><div class="form-grid"><div><label for="first-name">Nome</label><input id="first-name" name="firstName" type="text" autocomplete="given-name" required></div><div><label for="last-name">Sobrenome</label><input id="last-name" name="lastName" type="text" autocomplete="family-name" required></div></div><label for="birth-date">Data de nascimento</label><input id="birth-date" name="birthDate" type="date" required><label for="phone">Telefone</label><input id="phone" name="phone" type="tel" placeholder="(00) 00000-0000" required><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required><label for="password">Senha</label><input id="password" name="password" type="password" autocomplete="new-password" minlength="6" required><div id="auth-message" class="auth-message" role="status"></div><button class="btn btn-green login-primary" type="submit">Criar minha conta</button></form><p class="login-note">Já possui conta? <a href="login.html">Entrar</a>.</p></section></main><script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="assets/supabase-config.js"></script><script defer src="assets/auth.js"></script></body></html>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Crie sua conta na Academia Teológica do zero ao saber."/>
+  <title>Criar conta — Academia Teológica do zero ao saber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900&family=Crimson+Pro:ital,wght@0,400;0,600&display=swap" rel="stylesheet"/>
+  <link href="assets/style.css" rel="stylesheet"/>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="assets/supabase-config.js"></script>
+  <script defer src="assets/auth.js"></script>
+</head>
+<body class="login-page">
+  <main class="login-shell signup-shell">
+    <section class="login-brand">
+      <span class="login-kicker">NOVO ALUNO</span>
+      <h1>Comece sua jornada <small>com propósito e constância</small></h1>
+      <p>Crie sua conta para guardar o progresso e continuar seus estudos de onde parou.</p>
+    </section>
+    <section class="login-card" aria-labelledby="signup-title">
+      <h2 id="signup-title">Criar conta</h2>
+      <p>Preencha seus dados para acessar a plataforma.</p>
+      <form id="signup-form">
+        <div class="form-grid">
+          <div><label for="first-name">Nome</label><input id="first-name" name="firstName" type="text" autocomplete="given-name" required/></div>
+          <div><label for="last-name">Sobrenome</label><input id="last-name" name="lastName" type="text" autocomplete="family-name" required/></div>
+        </div>
+        <label for="birth-date">Data de nascimento</label>
+        <input id="birth-date" name="birthDate" type="date" autocomplete="bday" required/>
+        <label for="phone">Número de telefone</label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="25" placeholder="(00) 00000-0000" required/>
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@exemplo.com" required/>
+        <label for="password">Senha</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Mínimo de 12 caracteres" minlength="12" required/>
+        <label for="confirm-password">Confirme sua senha</label>
+        <input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Repita sua senha" minlength="12" required/>
+        <div id="auth-message" class="auth-message" role="status" aria-live="polite"></div>
+        <button class="btn btn-green login-primary" type="submit">Criar minha conta</button>
+      </form>
+      <p class="login-note">Usamos estes dados somente para administrar sua conta e seus estudos. Já possui conta? <a href="login.html">Entrar</a>.</p>
+    </section>
+  </main>
+</body>
+</html>
