@@ -1131,3 +1131,186 @@
     if(!window.supabaseClient) initializeAcademyApp();
   });
 })();
+
+// Experiencia diaria da trilha intensiva de 21 dias.
+// Mantem a compatibilidade com os modulos antigos, mas usa chaves proprias
+// quando a pagina atual pertence ao plano diario.
+(() => {
+  const DAY_COUNT = 21;
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+  const dayTaskIds = day => [1, 2, 3].map(task => `d${day}c${task}`);
+  const isDayCourse = () => Boolean(document.body.dataset.day || $('[data-day-card]'));
+  const dayChecked = id => localStorage.getItem(`task_${id}`) === '1';
+  const dayPercent = day => Math.round((dayTaskIds(day).filter(dayChecked).length / 3) * 100);
+  const dayPassed = day => localStorage.getItem(`quiz_d${day}_passed`) === '1';
+  const dayUnlocked = day => day === 1 || dayPassed(day - 1);
+  const requiredScore = total => Math.floor(total / 2) + 1;
+
+  function emitProgressChange() {
+    document.dispatchEvent(new CustomEvent('academy:progress-changed'));
+  }
+
+  function updateDayCards() {
+    $$('[data-day-card]').forEach(card => {
+      const day = Number(card.dataset.dayCard);
+      const unlocked = dayUnlocked(day);
+      const approved = dayPassed(day);
+      const percent = dayPercent(day);
+      const fill = $(`#day-card-p${day}`, card);
+      const text = $(`#day-card-t${day}`, card);
+      const status = $(`#day-lock-status-${day}`, card);
+      const link = $('[data-day-link]', card);
+      if(fill) fill.style.width = `${percent}%`;
+      if(text) text.textContent = `${percent}%`;
+      card.classList.toggle('module-locked', !unlocked);
+      card.classList.toggle('module-approved', approved);
+      if(status) {
+        status.textContent = !unlocked
+          ? `Bloqueado - conclua e seja aprovado no dia ${String(day - 1).padStart(2, '0')}`
+          : approved ? 'Aprovado' : `Liberado - checklist ${percent}%`;
+      }
+      if(link) {
+        link.classList.toggle('locked-link', !unlocked);
+        if(!unlocked) {
+          if(link.getAttribute('href')) link.dataset.originalHref = link.getAttribute('href');
+          link.removeAttribute('href');
+          link.setAttribute('aria-disabled', 'true');
+        } else if(!link.getAttribute('href')) {
+          link.setAttribute('href', link.dataset.originalHref || `dia-${String(day).padStart(2, '0')}.html`);
+          link.removeAttribute('aria-disabled');
+        }
+      }
+    });
+  }
+
+  function updateDailySummary() {
+    const tasks = Array.from({ length: DAY_COUNT }, (_, index) => dayTaskIds(index + 1)).flat();
+    const done = tasks.filter(dayChecked).length;
+    const percent = Math.round((done / tasks.length) * 100);
+    const approved = Array.from({ length: DAY_COUNT }, (_, index) => index + 1).filter(dayPassed).length;
+    const next = Array.from({ length: DAY_COUNT }, (_, index) => index + 1).find(day => dayUnlocked(day) && !dayPassed(day));
+    const setText = (id, value) => { const element = $(`#${id}`); if(element) element.textContent = value; };
+    setText('pg-pct', `${percent}%`);
+    setText('pg-pct2', `${percent}%`);
+    setText('pg-done', done);
+    setText('pg-total', tasks.length);
+    setText('pg-approved', approved);
+    setText('pg-mods', approved);
+    setText('pg-next', next ? String(next).padStart(2, '0') : 'Concluido');
+    setText('hdr-prog', `${percent}% concluido`);
+    const bar = $('#pg-bar'); if(bar) bar.style.width = `${percent}%`;
+    updateDayCards();
+  }
+
+  function enforceDayAccess() {
+    const day = Number(document.body.dataset.day || 0);
+    if(!day || dayUnlocked(day)) return;
+    const main = $('#main');
+    if(!main) return;
+    main.innerHTML = `<section class="page-hero"><h2>Dia bloqueado</h2><p>Conclua o checklist e seja aprovado no dia ${String(day - 1).padStart(2, '0')} para continuar.</p><a class="link-btn" href="dia-${String(day - 1).padStart(2, '0')}.html">Voltar ao dia anterior</a></section>`;
+  }
+
+  function restoreDayFields() {
+    $$('.day-check').forEach(input => { input.checked = dayChecked(input.id); });
+  }
+
+  function updateCurrentDayStatus(day) {
+    const status = $(`#access-status-${day}`);
+    if(!status) return;
+    const approved = dayPassed(day);
+    status.innerHTML = `<div class="module-status-strip ${approved ? 'approved' : ''}"><div><strong>Dia ${String(day).padStart(2, '0')}</strong><span>Checklist: ${dayPercent(day)}% - avaliacao: ${approved ? 'aprovada' : 'pendente'}</span></div><div class="status-pill">${approved ? 'Aprovado' : 'Em andamento'}</div></div>`;
+  }
+
+  function showDayQuizResult(day, force = false) {
+    const result = $(`#quiz-result-${day}`);
+    if(!result) return;
+    const questions = $$('.quiz-question', $('[data-quiz-day]'));
+    const scoreRaw = localStorage.getItem(`quiz_d${day}_score`);
+    if(scoreRaw === null && !force) { result.textContent = ''; return; }
+    const score = Number(scoreRaw || 0);
+    const required = requiredScore(questions.length);
+    const passed = dayPassed(day);
+    result.className = `quiz-result ${passed ? 'passed' : 'failed'}`;
+    result.textContent = passed
+      ? `Aprovado: ${score}/${questions.length} acertos. O proximo dia foi liberado.`
+      : `Resultado: ${score}/${questions.length}. Voce precisa de ${required} acertos para avancar.`;
+  }
+
+  window.submitDayQuiz = function(day) {
+    const panel = $('[data-quiz-day]');
+    const questions = $$('.quiz-question', panel);
+    let score = 0;
+    let missing = 0;
+    questions.forEach((question, index) => {
+      const checked = $('input[type="radio"]:checked', question);
+      if(!checked) { missing += 1; return; }
+      localStorage.setItem(`quiz_d${day}_q${index + 1}`, checked.value);
+      if(checked.dataset.correct === '1') score += 1;
+    });
+    const result = $(`#quiz-result-${day}`);
+    if(missing) {
+      if(result) { result.className = 'quiz-result failed'; result.textContent = 'Responda todas as questoes antes de enviar a avaliacao.'; }
+      return;
+    }
+    const passed = score >= requiredScore(questions.length);
+    localStorage.setItem(`quiz_d${day}_score`, String(score));
+    localStorage.setItem(`quiz_d${day}_passed`, passed ? '1' : '0');
+    showDayQuizResult(day, true);
+    updateCurrentDayStatus(day);
+    updateDailySummary();
+    emitProgressChange();
+  };
+
+  window.resetDayQuiz = function(day) {
+    if(!window.confirm('Deseja refazer a avaliacao deste dia?')) return;
+    localStorage.removeItem(`quiz_d${day}_score`);
+    localStorage.removeItem(`quiz_d${day}_passed`);
+    $$('.quiz-question', $('[data-quiz-day]')).forEach((question, index) => {
+      localStorage.removeItem(`quiz_d${day}_q${index + 1}`);
+      $$('input[type="radio"]', question).forEach(input => { input.checked = false; });
+    });
+    const result = $(`#quiz-result-${day}`); if(result) result.textContent = '';
+    updateCurrentDayStatus(day);
+    updateDailySummary();
+    emitProgressChange();
+  };
+
+  window.resetAllProgress = function() {
+    if(!window.confirm('Tem certeza que deseja zerar seu progresso do plano de 21 dias?')) return;
+    Object.keys(localStorage).forEach(key => {
+      if(key.startsWith('task_d') || key.startsWith('quiz_d') || key.startsWith('exercise_d')) localStorage.removeItem(key);
+    });
+    restoreDayFields();
+    updateDailySummary();
+    emitProgressChange();
+  };
+
+  function initializeDailyCourse() {
+    if(!isDayCourse()) return;
+    window.AcademyCoreTaskIds = new Set(Array.from({ length: DAY_COUNT }, (_, index) => dayTaskIds(index + 1)).flat());
+    restoreDayFields();
+    $$('.day-check').forEach(input => {
+      if(input.dataset.dailyBound) return;
+      input.dataset.dailyBound = 'true';
+      input.addEventListener('change', () => {
+        localStorage.setItem(`task_${input.id}`, input.checked ? '1' : '0');
+        updateDailySummary();
+        emitProgressChange();
+      });
+    });
+    const day = Number(document.body.dataset.day || 0);
+    if(day) {
+      window.AcademyProgressCloud?.markLastModule(day);
+      enforceDayAccess();
+      if(dayUnlocked(day)) {
+        showDayQuizResult(day);
+        updateCurrentDayStatus(day);
+      }
+    }
+    updateDailySummary();
+  }
+
+  window.addEventListener('academy:cloud-progress-ready', initializeDailyCourse);
+  document.addEventListener('DOMContentLoaded', initializeDailyCourse);
+})();

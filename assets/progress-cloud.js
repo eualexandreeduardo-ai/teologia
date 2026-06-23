@@ -27,16 +27,26 @@
   }
 
   function calculateSummary(data) {
-    const taskKeys = Object.keys(data).filter(key => key.startsWith('task_'));
+    const coreTaskIds = window.AcademyCoreTaskIds;
+    const dailyTaskKeys = Object.keys(data).filter(key => key.startsWith('task_d'));
+    const taskKeys = dailyTaskKeys.length
+      ? dailyTaskKeys
+      : Object.keys(data).filter(key => key.startsWith('task_') && (!coreTaskIds || coreTaskIds.has(key.slice(5))));
     const completedTasks = taskKeys.filter(key => data[key] === '1').length;
     const scores = {};
     const approvedModules = [];
+    const dayScores = {};
+    const approvedDays = [];
 
     Object.entries(data).forEach(([key, value]) => {
       const match = key.match(/^quiz_m(\d+)_score$/);
       if (match) scores[match[1]] = Number(value);
       const approvedMatch = key.match(/^quiz_m(\d+)_passed$/);
       if (approvedMatch && value === '1') approvedModules.push(Number(approvedMatch[1]));
+      const dayMatch = key.match(/^quiz_d(\d+)_score$/);
+      if (dayMatch) dayScores[dayMatch[1]] = Number(value);
+      const approvedDayMatch = key.match(/^quiz_d(\d+)_passed$/);
+      if (approvedDayMatch && value === '1') approvedDays.push(Number(approvedDayMatch[1]));
     });
 
     const unlockedModules = [1];
@@ -44,6 +54,12 @@
       if (approvedModules.includes(module - 1)) unlockedModules.push(module);
       else break;
     }
+    const unlockedDays = [1];
+    for (let day = 2; day <= 21; day += 1) {
+      if (approvedDays.includes(day - 1)) unlockedDays.push(day);
+      else break;
+    }
+    const currentDay = Number(document.body.dataset.day || lastKnownModule || unlockedDays.at(-1) || 1);
 
     return {
       checklists: Object.fromEntries(Object.entries(data).filter(([key]) => key.startsWith('task_'))),
@@ -52,9 +68,13 @@
       module_scores: scores,
       approved_modules: approvedModules.sort((a, b) => a - b),
       unlocked_modules: unlockedModules,
+      day_scores: dayScores,
+      approved_days: approvedDays.sort((a, b) => a - b),
+      unlocked_days: unlockedDays,
       overall_percentage: taskKeys.length ? Math.round((completedTasks / taskKeys.length) * 100) : 0,
       raw_local_storage: data,
-      last_module: Number(document.body.dataset.module || lastKnownModule || unlockedModules.at(-1) || 1)
+      last_module: Number(document.body.dataset.module || currentDay),
+      last_day: currentDay
     };
   }
 
